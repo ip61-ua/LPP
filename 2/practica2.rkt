@@ -21,15 +21,35 @@
   (integer->char (+ indice (char->integer #\a)) ))
 
 (define (entre-az? char)
-  null)
+  (<= (encuentra-indice #\a) (encuentra-indice char) (encuentra-indice #\z)))
 
 (define (rota-indice indice desplazamiento)
-  null)
+  (if (entre-az? char)
+      (if (entre-az? (encuentra-caracter (+ indice desplazamiento)))
+          (+ indice desplazamiento)
+          (modulo (+ indice desplazamiento) (+ (encuentra-indice #\z) 1)))
+      indice))
+  
+
+(define (perform-rotation c d)
+  (if (char-upper-case? c)
+      (char-upcase (encuentra-caracter (rota-indice (encuentra-indice (char-downcase c)) d)))
+      (encuentra-caracter (rota-indice (encuentra-indice c) d))))
 
 (define (cifra-caracter char desplazamiento)
-  null)
-
+  (perform-rotation char desplazamiento)
+        
 (define (descifra-caracter char desplazamiento)
-  null)
+  (perform-rotation char (- desplazamiento))
 
-(encuentra-caracter 0)
+(cifra-caracter #\c 5) ; ⇒ #\h)
+(cifra-caracter #\z -1) ; ⇒ #\y)
+(cifra-caracter #\j 40) ; ⇒ #\x)
+(cifra-caracter #\D 3) ; ⇒ #\G)
+(cifra-caracter #\ñ 3) ; ⇒ #\ñ)
+
+(descifra-caracter #\d 3) ; ⇒ #\a)
+(descifra-caracter #\y -1) ; ⇒ #\z)
+(descifra-caracter #\x 40) ; ⇒ #\j)
+(descifra-caracter #\G 3) ; ⇒ #\D)
+(descifra-caracter #\tab 3) ; ⇒ #\tab)
