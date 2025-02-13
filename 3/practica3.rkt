@@ -156,14 +156,35 @@
 ; (todos-distintos? '(a b c)) ; ⇒ #t
 ; (todos-distintos? '(a b c a)) ; ⇒ #f
 
-; c
+; c (PREGUNTAR EN CLASE)
 
+(define (longitud-mas-2? l)
+  (and (not (null? l))
+       (not (null? (rest l))) ))
+
+(define (cuantos-hay l x)
+  (if (null? l)
+      0
+      (if (equal? (first l) x)
+          (+ 1 (cuantos-hay (rest l) x))
+          (cuantos-hay (rest l) x) )))
+
+(define (elimina-dup l)
+  (if (null? l)
+      '()
+      (if (= (cuantos-hay l (first l)) 1)
+          (append (list (first l))
+                  (elimina-dup (rest l)))
+          (elimina-dup (rest l)))))
+
+(define (get-tam l)
+  (if (null? l) 0 (+ 1 (get-tam (rest l)))))
 
 (define (solo-dos-iguales? lista)
-  (or (not (null? lista))
-      (and (not (null? lista)) (not (null? (rest lista))) )
-      (and 
-           (todos-distintos? (rest lista)))))
+  (and (longitud-mas-2? lista)
+       (cuantos-hay lista (first lista))
+       (= 1 (- (get-tam lista) (get-tam (elimina-dup lista))))
+       ))
 
 (solo-dos-iguales? '()) ; ⇒ #f
 (solo-dos-iguales? '(a)) ; ⇒ #f
@@ -171,6 +192,3 @@
 (solo-dos-iguales? '(a b c b a a)) ; ⇒ #f
 (solo-dos-iguales? '(a b c a a)) ; ⇒ #f
 (solo-dos-iguales? '(a b c a b)) ; ⇒ #f
-
-
-
