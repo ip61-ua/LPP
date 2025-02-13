@@ -204,7 +204,69 @@
 (caja-puntero p1a)
 
 ; a.2)
+(cons (cdr (first p1)) (first (third p1)))
 
+; b.1)
+(define p2
+  (cons (list (cons 'a (cons 'b 'c)) (list 'd 'e) 'f) (list 'g)))
+(caja-puntero p2)
+
+; b.2)
+(cons (cddr (first (car p2 ))) (second (second (first p2 ))))
+
+; Ejercicio 4
+(define (data-eq? p)
+  (equal? (car p) (cdr p)))
+
+(define (contar-datos-iguales lista-parejas)
+  (if (null? lista-parejas)
+      0
+      (if (data-eq? (first lista-parejas))
+          (+ 1 (contar-datos-iguales (rest lista-parejas)))
+          (+ 0 (contar-datos-iguales (rest lista-parejas)))
+          )))
+
+; (contar-datos-iguales '((2 . 3) ("hola" . "hola") (\#a . \#a) (true . false))) ; ⇒ 2
+; (contar-datos-iguales '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) ; ⇒ 0
+
+; Ejercicio 5
+;;;; IMPORTADO DE LA PRÁCTICA 2
+(define (obten-valor char)
+  (cond
+    ((equal? char #\A) 1)
+    ((equal? char #\J) 10)
+    ((equal? char #\Q) 11)
+    ((equal? char #\K) 12)
+    (else (- (char->integer char) (char->integer #\0)))))
+
+(define (obten-palo char)
+  (cond
+    ((equal? char #\♠) 'Picas)
+    ((equal? char #\♣) 'Tréboles)
+    ((equal? char #\♥) 'Corazones)
+    ((equal? char #\♦) 'Diamantes)))
+
+(define (cs->p s)
+  (cons (string-ref (symbol->string s) 0) (string-ref (symbol->string s) 1) ))
+
+(define (carta c)
+  (cons (obten-valor (car (cs->p c))) (obten-palo (cdr (cs->p c)))))
+
+(define (valor-carta c)
+  (car (carta c)))
+;;;; FIN IMPORTE
+
+(define mano1 '(A♦ 2♦ 3♣ 4♦ 5♥))
+(define mano2 '(J♦ J♣ J♠ J♥ K♣))
+
+; a
+(define (palo-carta c)
+  (cdr (carta c)))
+
+; (palo-carta 'A♠) ; ⇒ Picas
+; (palo-carta '2♣) ; ⇒ Tréboles
+; (palo-carta '3♥) ; ⇒ Corazones
+; (palo-carta '4♦) ; ⇒ Diamantes
 
 
 
