@@ -186,9 +186,25 @@
        (= 1 (- (get-tam lista) (get-tam (elimina-dup lista))))
        ))
 
-(solo-dos-iguales? '()) ; ⇒ #f
-(solo-dos-iguales? '(a)) ; ⇒ #f
-(solo-dos-iguales? '(a b c a)) ; ⇒ #t
-(solo-dos-iguales? '(a b c b a a)) ; ⇒ #f
-(solo-dos-iguales? '(a b c a a)) ; ⇒ #f
-(solo-dos-iguales? '(a b c a b)) ; ⇒ #f
+; (solo-dos-iguales? '()) ; ⇒ #f
+; (solo-dos-iguales? '(a)) ; ⇒ #f
+; (solo-dos-iguales? '(a b c a)) ; ⇒ #t
+; (solo-dos-iguales? '(a b c b a a)) ; ⇒ #f
+; (solo-dos-iguales? '(a b c a a)) ; ⇒ #f
+; (solo-dos-iguales? '(a b c a b)) ; ⇒ #f
+
+; Ejercicio 3
+; a.1)
+(define p1
+  (list (cons 'a 'b) 'c (list 'd 'e)))
+
+(define p1a
+  (cons (cons 'a 'b) (cons 'c (cons (cons 'd (cons 'e '()) ) '()))))
+
+(caja-puntero p1a)
+
+; a.2)
+
+
+
+
