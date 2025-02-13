@@ -26,7 +26,7 @@
 
 ; a.2)
 
-(minimo '(1 8 6 4 3)) ; ⇒ 1
+; (minimo '(1 8 6 4 3)) ; ⇒ 1
 
 ; ¿Qué lista se pasa como parámetro a la primera llamada recursiva a la función?
 ; > Se pasa (rest l), siendo en eset caso: ( 8 6 4 3 )
@@ -121,3 +121,41 @@
 ; (str-contiene? "Hola" #\o) ; ⇒ #t
 ; (str-contiene? "Esto es una frase" #\space) ; ⇒ #t
 ; (str-contiene? "Hola" #\h) ; ⇒ #f
+
+; Ejercicio 2
+
+; a)
+
+(define (primeros2-iguales? l)
+  (equal? (first l) (second l)))
+
+(define (todos-iguales? lista)
+  (or (null? lista)
+      (null? (rest lista))
+      (and (primeros2-iguales? lista)
+           (todos-iguales? (rest lista)) )))
+
+; (todos-iguales? '()) ; ⇒ #t
+; (todos-iguales? '(a)) ; ⇒ #t
+; (todos-iguales? '(a a a a a a a)) ; ⇒ #t
+; (todos-iguales? '((a b) (a b) (a b))) ; ⇒ #t
+; (todos-iguales? '(a a a a a b)) ; ⇒ #f
+
+; b
+(define (no-hay-otro-1ro-igual? l)
+  (not (contiene? (rest l) (first l))))
+
+(define (todos-distintos? lista)
+  (or (null? lista)
+      (null? (rest lista))
+      (and (no-hay-otro-1ro-igual? lista)
+           (todos-distintos? (rest lista)))))
+
+; (todos-distintos? '()) ; ⇒ #t
+; (todos-distintos? '(a)) ; ⇒ #t
+; (todos-distintos? '(a b c)) ; ⇒ #t
+; (todos-distintos? '(a b c a)) ; ⇒ #f
+
+
+
+
