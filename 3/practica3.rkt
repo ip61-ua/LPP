@@ -156,6 +156,21 @@
 ; (todos-distintos? '(a b c)) ; ⇒ #t
 ; (todos-distintos? '(a b c a)) ; ⇒ #f
 
+; c
+
+
+(define (solo-dos-iguales? lista)
+  (or (not (null? lista))
+      (and (not (null? lista)) (not (null? (rest lista))) )
+      (and 
+           (todos-distintos? (rest lista)))))
+
+(solo-dos-iguales? '()) ; ⇒ #f
+(solo-dos-iguales? '(a)) ; ⇒ #f
+(solo-dos-iguales? '(a b c a)) ; ⇒ #t
+(solo-dos-iguales? '(a b c b a a)) ; ⇒ #f
+(solo-dos-iguales? '(a b c a a)) ; ⇒ #f
+(solo-dos-iguales? '(a b c a b)) ; ⇒ #f
 
 
 
