@@ -39,7 +39,7 @@
 ;   1 (minimo ( 8 6 4 3 ));
 ;   1 3;
 
-; b)
+; b
 
 (define (concatena l)
   (if (null? l)
@@ -50,7 +50,7 @@
 ; (concatena '(#\H #\o #\l #\a)) ; ⇒ "Hola"
 ; (concatena '(#\S #\c #\h #\e #\m #\e #\space #\m #\o #\l #\a)) ; ⇒ "Scheme mola"
 
-; c)
+; c
 
 ;;;; IMPORTADO DE PRÁCTICA 2
 (define (encuentra-indice char)
@@ -96,7 +96,7 @@
 ; (descifra-cadena "Ox ex veqkb no vk Wkxmrk, no meiy xywlbo xy aesoby kmybnkbwo" 10)
 ; ⇒ "En un lugar de la Mancha, de cuyo nombre no quiero acordarme"
 
-; d)
+; d
 
 (define (es-primero? l x)
   (equal? (first l) x))
@@ -124,7 +124,7 @@
 
 ; Ejercicio 2
 
-; a)
+; a
 
 (define (primeros2-iguales? l)
   (equal? (first l) (second l)))
@@ -268,5 +268,107 @@
 ; (palo-carta '3♥) ; ⇒ Corazones
 ; (palo-carta '4♦) ; ⇒ Diamantes
 
+; b
+(define (veces-palo l p)
+  (if (null? l)
+      0
+      (if (equal? (palo-carta (first l)) p)
+          (+ 1 (veces-palo (rest l) p))
+          (veces-palo (rest l) p))))
 
+; (veces-palo '(5♠ 6♣ 7♥ 8♦ 9♠) 'Picas) ; ⇒ 2
+; (veces-palo '(J♠ Q♣ K♥) 'Diamantes) ; ⇒ 0
+; (veces-palo '(A♣ 2♥ 3♠) 'Corazones) ; ⇒ 1
+; (veces-palo '() 'Tréboles) ; ⇒ 0
 
+(define (color-equal-len l)
+  (veces-palo l (palo-carta (first l))))
+
+(define (color? l)
+  (and (not (null? l))
+       (= (color-equal-len l) (length l))))
+
+; (palo-carta (first '(5♣ J♦ J♣ Q♠ Q♥)))
+; (color? '(5♣ J♦ J♣ Q♠ Q♥)) ; ⇒ #f
+; (color? '(2♦ 5♦ 6♦ J♦ K♦)) ; ⇒ #t
+
+; c
+
+(define (escalera? l)
+  (and (not (null? l))
+       (not (null? (rest l)))
+       (< (valor-carta (first l))
+          (valor-carta (first (rest l))))))
+
+; (escalera? '(5♣ 4♦ 3♣)) ; ⇒ #f
+; (escalera? '(8♣ 9♦ J♣ Q♦)) ; ⇒ #t
+; (escalera? '(8♣ 2♣)) ; ⇒ #f
+; (escalera? '(A♣ 2♦ 3♣)) ; ⇒ #t
+; (escalera? '(A♣)) ; ⇒ #t
+; (escalera? '()) ; ⇒ #t
+
+; Ejercicio 6
+; a
+
+(define (suma-izq c a)
+  (cons (+ (car c) a) (cdr c)))
+
+(define (suma-der c a)
+  (cons (car c) (+ (cdr c) a)))
+
+; (suma-izq (cons 10 20) 3)  ; ⇒ (13 . 20)
+; (suma-der (cons 10 20) 5)  ; ⇒ (10 . 25)
+
+; b.1)
+
+(define (recursivo-sum x)
+  (suma-impares-pares (rest x)))
+
+(define (recursivo-der r)
+  (suma-der (recursivo-sum r) (first r)))
+
+(define (recursivo-izq l)
+  (suma-izq (recursivo-sum l) (first l)))
+
+(define (suma-impares-pares l)
+  (cond
+    ((null? l) (cons 0 0))
+    ((even? (first l)) (recursivo-der l))
+    ((odd? (first l)) (recursivo-izq l))))
+
+; (suma-impares-pares '(3 2 1 4 8 7 6 5)) ; ⇒ (16 . 20)
+; (suma-impares-pares '(3 1 5))           ; ⇒ (9 . 0)
+
+; b.2)
+; Dada la siguiente llamada, indica qué devuelve la primera llamada recursiva:
+; (suma-impares-pares '(2 1 2 1 4))
+; > La primera llamada recursiva devolvería:
+;   (suma-impares-pares '(2 1 2 1 4))
+;   (suma-der (recursivo-sum '(2 1 2 1 4)) (first '(2 1 2 1 4))))
+;   (suma-der (recursivo-sum '(1 2 1 4)) 2)
+;   que posteriormente es:
+;   (suma-der (cons 2 6) 2)
+
+; c
+
+(define (hay-mas? l)
+  (null? l))
+
+(define (format-pair-str6 elem)
+  (cons elem (string-length elem)))
+
+(define (recursivo-str d)
+  (> (string-length (first d)) (cdr (cadena-mayor (rest d)))))
+
+(define (cadena-mayor lista)
+  (if (hay-mas? lista)
+      (format-pair-str6 "")
+      (format-pair-str6 (if (recursivo-str lista)
+                            (first lista)
+                            (car (cadena-mayor (rest lista)))
+                            ))))
+          
+
+; (cadena-mayor '()) ; ⇒ ("" . 0)
+; (cadena-mayor '("vamos" "a" "obtener" "la" "cadena" "mayor")) ; ⇒  ("obtener" . 7)
+; (cadena-mayor '("prueba" "con" "maximo" "igual")) ; ⇒ ("maximo" . 6)
