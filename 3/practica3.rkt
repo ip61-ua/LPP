@@ -90,8 +90,34 @@
 (define (descifra-cadena cad desplazamiento)
   (cifra-cadena cad (- desplazamiento)))
 
-(cifra-cadena "En un lugar de la Mancha, de cuyo nombre no quiero acordarme" 10)
+; (cifra-cadena "En un lugar de la Mancha, de cuyo nombre no quiero acordarme" 10)
 ; ⇒ "Ox ex veqkb no vk Wkxmrk, no meiy xywlbo xy aesoby kmybnkbwo"
 
-(descifra-cadena "Ox ex veqkb no vk Wkxmrk, no meiy xywlbo xy aesoby kmybnkbwo" 10)
+; (descifra-cadena "Ox ex veqkb no vk Wkxmrk, no meiy xywlbo xy aesoby kmybnkbwo" 10)
 ; ⇒ "En un lugar de la Mancha, de cuyo nombre no quiero acordarme"
+
+; d)
+
+(define (es-primero? l x)
+  (equal? (first l) x))
+
+(define (hay-algo? l)
+  (not (null? l)))
+
+(define (es-resto? l x)
+  (contiene? (rest l) x))
+
+(define (contiene? l x)
+  (and (hay-algo? l)
+       (or (es-primero? l x)
+           (es-resto? l x))))
+
+(define (str-contiene? str x)
+  (contiene? (string->list str) x))
+
+; (contiene? '(algo 3 #\A) 3) ; ⇒ #t
+; (contiene? '(algo 3 #\A) "algo") ; ⇒ #f
+; (contiene? '(algo 3 #\A) 'algo) ; ⇒ #t
+; (str-contiene? "Hola" #\o) ; ⇒ #t
+; (str-contiene? "Esto es una frase" #\space) ; ⇒ #t
+; (str-contiene? "Hola" #\h) ; ⇒ #f
