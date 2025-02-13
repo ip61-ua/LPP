@@ -2,6 +2,8 @@
 *.rkt#*
 .#*.rkt
 
+**/*compiled
+
 *.scm~
 *.scm#*
 .#*.scm
