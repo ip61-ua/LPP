@@ -77,7 +77,15 @@
 ;(inserta-pos 'b 2 '(a a a a)) ; ⇒ '(a a b a a)
 ;(inserta-pos 'b 0 '(a a a a)) ; ⇒ '(b a a a a)
 
+;; b)
 
+(define (inserta-ordenada n lista-ordenada)
+  (cond
+    ((null? lista-ordenada) (list n))
+    ((< n (first lista-ordenada)) (list n lista-ordenada))
+    ((>= n (first lista-ordenada)) (list (first lista-ordenada) (inserta-ordenada n (rest lista-ordenada))))))
+
+(inserta-ordenada 10 '(-8 2 3 11 20)) ; ⇒ (-8 2 3 10 11 20)
 
 
 
