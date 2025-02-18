@@ -79,15 +79,32 @@
 
 ;; b)
 
+(define (append-principio n l)
+  (append (list n) l))
+
+(define (insorden-recursivo n l)
+  (append-principio (first l)
+                    (inserta-ordenada n
+                                      (rest l))))
+
 (define (inserta-ordenada n lista-ordenada)
   (cond
     ((null? lista-ordenada) (list n))
-    ((< n (first lista-ordenada)) (list n lista-ordenada))
-    ((>= n (first lista-ordenada)) (list (first lista-ordenada) (inserta-ordenada n (rest lista-ordenada))))))
+    ((< n (first lista-ordenada)) (append-principio n lista-ordenada))
+    ((>= n (first lista-ordenada)) (insorden-recursivo n lista-ordenada))))
 
-(inserta-ordenada 10 '(-8 2 3 11 20)) ; ⇒ (-8 2 3 10 11 20)
+;(inserta-ordenada 10 '(-8 2 3 11 20)) ; ⇒ (-8 2 3 10 11 20)
+
+;; c)
+
+(define (ordena lista)
+  (if (null? lista)
+      '()
+      (inserta-ordenada (first lista) (ordena (rest lista)))))
 
 
+(ordena '(2 -1 100 4 -6)) ; ⇒ (-6 -1 2 4 100)
+(ordena '(-1 -1 -2 -999 1 0 10)) ; ⇒ (-999 -2 -1 -1 0 1 10)
 
 
 
