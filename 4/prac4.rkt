@@ -108,6 +108,8 @@
 
 ;; Ejercicio 3
 
+;; a)
+
 (define (es-lprimero? l d)
   (equal? (first l) d))
 
@@ -120,10 +122,26 @@
     ((es-lprimero? lista dato) lista)
     ((not (es-lprimero? lista dato)) (poner-2-1 lista (mueve-al-principio (rest lista) dato)))))
 
-(mueve-al-principio '(a b e c d e f) 'e) ; ⇒ (e a b c d e f)
-(mueve-al-principio '(a b c d e f g) 'a) ; ⇒ (a b c d e f g)
-(mueve-al-principio '(u l o z) 'z) ; ⇒ (z u l o)
-(mueve-al-principio '(a c c a) 'c) ; ⇒ (c a c a)
+;(mueve-al-principio '(a b e c d e f) 'e) ; ⇒ (e a b c d e f)
+;(mueve-al-principio '(a b c d e f g) 'a) ; ⇒ (a b c d e f g)
+;(mueve-al-principio '(u l o z) 'z) ; ⇒ (z u l o)
+;(mueve-al-principio '(a c c a) 'c) ; ⇒ (c a c a)
 
+;; b)
 
-  
+(define (new-pair-symbolic s n)
+  (if (= (string-length (symbol->string (first s))) (first n))
+      (list (cons (first s) (first n)))
+      '()))
+
+(define (comprueba-simbolos-recursivo s n)
+  (append (new-pair-symbolic s n)
+          (comprueba-simbolos (rest s) (rest n))))
+
+(define (comprueba-simbolos lista-simbolos lista-num)
+  (if (null? lista-simbolos)
+      '()
+      (comprueba-simbolos-recursivo lista-simbolos lista-num)
+      ))
+
+(comprueba-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6)) ; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
