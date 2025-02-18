@@ -144,4 +144,17 @@
       (comprueba-simbolos-recursivo lista-simbolos lista-num)
       ))
 
-(comprueba-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6)) ; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
+;(comprueba-simbolos '(este es un ejercicio de examen) '(2 1 2 9 1 6)) ; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
+
+;; Ejercicio 4
+
+(define (do-nextpair p)
+  (expande-pareja (cons (car p) (- (cdr p) 1))))
+
+(define (expande-pareja p)
+  (if (or (null? p) (= (cdr p) 0))
+      '()
+      (append (list (car p)) (do-nextpair p))))
+
+(expande-pareja '(hola . 3)) ; ⇒ (hola hola hola)
+(expande-pareja '(#t . 5)) ; ⇒ (#t #t #t #t #t)
