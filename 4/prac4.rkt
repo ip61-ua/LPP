@@ -103,8 +103,27 @@
       (inserta-ordenada (first lista) (ordena (rest lista)))))
 
 
-(ordena '(2 -1 100 4 -6)) ; ⇒ (-6 -1 2 4 100)
-(ordena '(-1 -1 -2 -999 1 0 10)) ; ⇒ (-999 -2 -1 -1 0 1 10)
+;(ordena '(2 -1 100 4 -6)) ; ⇒ (-6 -1 2 4 100)
+;(ordena '(-1 -1 -2 -999 1 0 10)) ; ⇒ (-999 -2 -1 -1 0 1 10)
+
+;; Ejercicio 3
+
+(define (es-lprimero? l d)
+  (equal? (first l) d))
+
+(define (poner-2-1 l r)
+  (append (list (first r) (first l)) (rest r)))
+
+(define (mueve-al-principio lista dato)
+  (cond
+    ((null? lista) '())
+    ((es-lprimero? lista dato) lista)
+    ((not (es-lprimero? lista dato)) (poner-2-1 lista (mueve-al-principio (rest lista) dato)))))
+
+(mueve-al-principio '(a b e c d e f) 'e) ; ⇒ (e a b c d e f)
+(mueve-al-principio '(a b c d e f g) 'a) ; ⇒ (a b c d e f g)
+(mueve-al-principio '(u l o z) 'z) ; ⇒ (z u l o)
+(mueve-al-principio '(a c c a) 'c) ; ⇒ (c a c a)
 
 
-
+  
