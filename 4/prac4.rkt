@@ -181,7 +181,20 @@
 
 ;; c)
 
+(define (parse-pareja p)
+  (cons (first p) (second p)))
 
+(define (expnd-recursivo p l)
+   (append p (expande (rest l))))
+  
+(define (expande lista)
+  (cond
+    ((null? lista) '())
+    ((number? (first lista)) (expande-pareja )
+    ((not (number? (first lista))) (expande-pareja (cons (first lista) (second lista)))            
+    ))
+
+(expande '(4 clase ua 3 lpp aulario)) ; ⇒ (clase clase clase clase ua lpp lpp lpp aulario)
 
 
 
