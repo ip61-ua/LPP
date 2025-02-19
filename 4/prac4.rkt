@@ -270,17 +270,39 @@
 ; 'error
 
 ;; Ejercicio 6
+
 ;; a)
+
 (require "lpp.rkt")
 
 (define (junt l a)
   (append (list a) l))
 
-(define (coloca tres-listas un dos tres)
-  (list (junt (first tres-listas) un)
-        (junt (second tres-listas) dos)
-        (junt (third tres-listas) tres)))
+(define (putl pos l obj)
+   (if (null? l)
+       (list obj)
+       (junt (pos l) obj)))
 
-(coloca '(() () ()) 'a 'b 'c) ; ⇒ '((a) (b) (c))
-(coloca '((a) (a) (a)) 'b 'b 'b) ; ⇒ '((b a) (b a) (b a))
-(coloca '((a) (b c) (d e f)) 'g 'h 'i) ; ⇒ '((g a) (h b c) (i d e f)))
+(define (coloca tres-listas un dos tres)
+  (list (putl first tres-listas un)
+        (putl second tres-listas dos)
+        (putl third tres-listas tres)))
+
+;(coloca null 'a 'b 'c) ; ⇒ '((a) (b) (c))
+;(coloca '(() () ()) 'a 'b 'c) ; ⇒ '((a) (b) (c))
+;(coloca '((a) (a) (a)) 'b 'b 'b) ; ⇒ '((b a) (b a) (b a))
+;(coloca '((a) (b c) (d e f)) 'g 'h 'i) ; ⇒ '((g a) (h b c) (i d e f)))
+
+;; b)
+
+(define (reparte-tres lista-cartas)
+  (if (null? lista-cartas)
+      '()
+      (coloca (reparte-tres (rest (rest (rest lista-cartas))))
+              (first lista-cartas)
+              (second lista-cartas)
+              (third lista-cartas))))
+
+(define doce-cartas '(A♣ 2♣ 3♣ 4♣ 5♣ 6♣ 7♣ 8♣ 9♣ J♣ Q♣ K♣))
+(reparte-tres doce-cartas) ; ⇒ '((A♣ 4♣ 7♣ J♣) (2♣ 5♣ 8♣ Q♣) (3♣ 6♣ 9♣ K♣))
+
