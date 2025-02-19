@@ -166,12 +166,16 @@
 (define (expande-parejas . pareja_n)
   (if (null? pareja_n)
       '()
-      (append (expande-pareja (first pareja_n)) (apply expande-parejas (rest pareja_n)) )))
+      (append (expande-pareja (first pareja_n)) (apply expande-parejas (rest pareja_n)))))
  
 
-(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
+;(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
 
+;; b.1)
 
+;; hecho.
+
+;; b.2)
 
 
 
