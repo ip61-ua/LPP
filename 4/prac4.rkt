@@ -181,20 +181,46 @@
 
 ;; c)
 
+(define (first-not-num? l)
+  (not (number? (first l))))
+
+(define (first-num? l)
+  (number? (first l)))
+
 (define (parse-pareja p)
-  (cons (first p) (second p)))
+  (expande-pareja (cons (second p) (first p))))
 
 (define (expnd-recursivo p l)
    (append p (expande (rest l))))
-  
+
+(define (expnd-not-num-r l)
+  (expnd-recursivo (list (first l)) l))
+
+(define (expnd-num-r l)
+  (expnd-recursivo (parse-pareja l) (rest l)))
+
 (define (expande lista)
   (cond
     ((null? lista) '())
-    ((number? (first lista)) (expande-pareja )
-    ((not (number? (first lista))) (expande-pareja (cons (first lista) (second lista)))            
-    ))
+    ((first-not-num? lista) (expnd-not-num-r lista))
+    ((first-num? lista) (expnd-num-r lista))))
 
-(expande '(4 clase ua 3 lpp aulario)) ; ⇒ (clase clase clase clase ua lpp lpp lpp aulario)
+;(expande '(4 clase ua 3 lpp aulario)) ; ⇒ (clase clase clase clase ua lpp lpp lpp aulario)
+
+;; Ejercicio 5
+
+;; a)
+
+;((lambda (x) (* x x)) 3) ; ⇒ 9
+;((lambda () (+ 6 4))) ; ⇒ 10
+;((lambda (x y) (* x (+ 2 y))) (+ 2 3) 4) ; ⇒ 30
+;((lambda (x y) (* x (+ 2 x))) 5) ; ⇒ ERROR DE ARGUMENTOS (arity mismatch;)
+
+(define f (lambda (a b) (string-append "***" a b "***")))
+(define g f)
+;(procedure? g) ; ⇒ #t
+;(g "Hola" "Adios") ; ⇒ "***HolaAdios***"
+
 
 
 
