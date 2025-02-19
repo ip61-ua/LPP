@@ -306,3 +306,18 @@
 (define doce-cartas '(A♣ 2♣ 3♣ 4♣ 5♣ 6♣ 7♣ 8♣ 9♣ J♣ Q♣ K♣))
 (reparte-tres doce-cartas) ; ⇒ '((A♣ 4♣ 7♣ J♣) (2♣ 5♣ 8♣ Q♣) (3♣ 6♣ 9♣ K♣))
 
+;; c)
+
+(define (quita-ultimo l)
+  (if (null? (rest l))
+      '()
+      (append (list (first l)) (quita-ultimo (rest l)))
+      ))
+
+(define (elemento-central l)
+  (if (null? (rest l))
+      (first l)
+      (elemento-central (quita-ultimo (rest l)))
+      ))
+
+(elemento-central '(a b c d e f g)) ; ⇒ d
