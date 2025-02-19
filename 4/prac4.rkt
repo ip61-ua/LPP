@@ -304,7 +304,7 @@
               (third lista-cartas))))
 
 (define doce-cartas '(A♣ 2♣ 3♣ 4♣ 5♣ 6♣ 7♣ 8♣ 9♣ J♣ Q♣ K♣))
-(reparte-tres doce-cartas) ; ⇒ '((A♣ 4♣ 7♣ J♣) (2♣ 5♣ 8♣ Q♣) (3♣ 6♣ 9♣ K♣))
+;(reparte-tres doce-cartas) ; ⇒ '((A♣ 4♣ 7♣ J♣) (2♣ 5♣ 8♣ Q♣) (3♣ 6♣ 9♣ K♣))
 
 ;; c)
 
@@ -320,4 +320,40 @@
       (elemento-central (quita-ultimo (rest l)))
       ))
 
-(elemento-central '(a b c d e f g)) ; ⇒ d
+;(elemento-central '(a b c d e f g)) ; ⇒ d
+
+;; d)
+
+(define (izquierda tres-listas)
+  (append (third tres-listas)
+          (first tres-listas)
+          (second tres-listas)))
+
+(define (centro tres-listas)
+  (append (third tres-listas)
+          (second tres-listas)
+          (first tres-listas)))
+
+(define (derecha tres-listas)
+  (append (second tres-listas)
+          (third tres-listas)
+          (first tres-listas)))
+
+(define (adivina lista)
+  (elemento-central lista))
+
+(random-seed 90)
+
+(define t1 (reparte-tres (cartas 27)))
+
+t1
+
+(define t2 (reparte-tres (derecha t1)))
+
+t2
+
+(define t3 (reparte-tres (centro t2)))
+
+t3
+
+(adivina (derecha t3))
