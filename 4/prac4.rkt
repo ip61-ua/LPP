@@ -148,6 +148,8 @@
 
 ;; Ejercicio 4
 
+;; a)
+
 (define (do-nextpair p)
   (expande-pareja (cons (car p) (- (cdr p) 1))))
 
@@ -156,5 +158,26 @@
       '()
       (append (list (car p)) (do-nextpair p))))
 
-(expande-pareja '(hola . 3)) ; ⇒ (hola hola hola)
-(expande-pareja '(#t . 5)) ; ⇒ (#t #t #t #t #t)
+;(expande-pareja '(hola . 3)) ; ⇒ (hola hola hola)
+;(expande-pareja '(#t . 5)) ; ⇒ (#t #t #t #t #t)
+
+;; b)
+
+(define (expande-parejas . pareja_n)
+  (if (null? pareja_n)
+      '()
+      (append (expande-pareja (first pareja_n)) (apply expande-parejas (rest pareja_n)) )))
+ 
+
+(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
+
+
+
+
+
+
+
+
+
+
+
