@@ -265,10 +265,22 @@
 ; (string-append "Hola" "Adios")
 ; "HolaAdios"
 
-;(bar + number? "Hola" 5) ; ⇒ ?
+;(bar + number? "Hola" 5) ; ⇒ 'error
+; (if (and (number? "Hola") (number? 5)) (f x y) 'error))
+; 'error
 
+;; Ejercicio 6
+;; a)
+(require "lpp.rkt")
 
+(define (junt l a)
+  (append (list a) l))
 
+(define (coloca tres-listas un dos tres)
+  (list (junt (first tres-listas) un)
+        (junt (second tres-listas) dos)
+        (junt (third tres-listas) tres)))
 
-
-
+(coloca '(() () ()) 'a 'b 'c) ; ⇒ '((a) (b) (c))
+(coloca '((a) (a) (a)) 'b 'b 'b) ; ⇒ '((b a) (b a) (b a))
+(coloca '((a) (b c) (d e f)) 'g 'h 'i) ; ⇒ '((g a) (h b c) (i d e f)))
