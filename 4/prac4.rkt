@@ -221,6 +221,52 @@
 ;(procedure? g) ; ⇒ #t
 ;(g "Hola" "Adios") ; ⇒ "***HolaAdios***"
 
+;; b)
+
+(define suma-3 (lambda (x) (+ x 3)))
+
+(define factorial (lambda (x) (if (= x 0) 1 (* x (factorial (- x 1))))))
+
+;; c)
+
+(define (doble x)
+   (* 2 x))
+
+(define (foo f g x y)
+   (f (g x) y))
+
+;(foo + 10 doble 15) ; ⇒ ERROR
+;  (+ (10 doble) y)) ; el número 10 no es procedimiento
+
+;(foo doble + 10 15) ; ⇒ ERROR
+;  (doble (g x) y) ; Arity mismatch. doble solo acepta un argumento.
+
+;(foo + doble 10 15) ; ⇒ 35
+;  (+ (doble 10) 15)
+;  (+ 20 15)
+;  35
+
+;(foo string-append (lambda (x) (string-append "***" x)) "Hola" "Adios") ; ⇒ "***HolaAdios"
+;  (string-append (lambda... "Hola") "Adios"))
+;  (string-append "***Hola" "Adios")
+;  "***HolaAdios"
+
+(define (bar f p x y)
+   (if (and (p x) (p y))
+       (f x y)
+       'error))
+
+;(bar doble number? 10 15) ; ⇒ ERROR
+; (if (and (number? 10) (number? 15)) (doble 10 15) 'error))
+; (doble 10 15) ; Arity mismatch
+
+;(bar string-append string? "Hola" "Adios") ; ⇒ "HolaAdios"
+; (if (and (string? "Hola") (string? "Adios")) (string-append "Hola" "Adios") 'error))
+; (string-append "Hola" "Adios")
+; "HolaAdios"
+
+;(bar + number? "Hola" 5) ; ⇒ ?
+
 
 
 
