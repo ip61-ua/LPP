@@ -50,16 +50,49 @@
   (if (or (null? lista1) (null? lista2))
       '()
       (elimina-vacio (cons (aux-check pred lista1 lista2)
-                           (comprueba pred (rest lista1) (rest lista2)) ))))
+                           (comprueba pred (rest lista1) (rest lista2))))))
 
-(comprueba (lambda (x y)
-             (= (string-length (symbol->string x)) y))
-           '(este es un ejercicio de examen) 
-           '(2 1 2 9 1 6))
+;(comprueba (lambda (x y)
+;             (= (string-length (symbol->string x)) y))
+;           '(este es un ejercicio de examen) 
+;           '(2 1 2 9 1 6))
 ; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
 
-(comprueba (lambda (x y)
-              (= (string-length x) (string-length y)))
-             '("aui" "a" "ae" "c" "aeiou")
-             '("hola" "b" "es" "que" "cinco"))
+;(comprueba (lambda (x y)
+;              (= (string-length x) (string-length y)))
+;             '("aui" "a" "ae" "c" "aeiou")
+;             '("hola" "b" "es" "que" "cinco"))
 ; ⇒ (("a" . "b") ("ae" . "es") ("aeiou" . "cinco"))
+
+;; Ejercicio 2
+
+
+;----;
+; b) ;
+;----;
+
+(define (inserta-ordenada n lista-ordenada)
+  (cond
+    ((null? lista-ordenada) (list n))
+    ((<= n (first lista-ordenada)) (cons n lista-ordenada))
+    (else (cons (first lista-ordenada)
+                (inserta-ordenada n (rest lista-ordenada))))))
+
+(inserta-ordenada 10 '(-8 2 3 11 20)) ;-> '(-8 2 3 10 11 20)
+
+(define (inserta-ordenada-genérica n lista-ordenada menor-igual?)
+  ...)
+
+;----;
+; c) ;
+;----;
+
+
+(define (ordena lista)
+  (if (null? lista)
+      '()
+      (inserta-ordenada (first lista) (ordena (rest lista)))))
+
+(ordena '(2 -1 100 4 -6)) ;-> '(-6 -1 2 4 100)
+
+(define (ordena lista menor-igual?) ...)
