@@ -29,7 +29,37 @@
     (else (intercambia-dos-primeros pred (cons (first lista)
                                                 (mueve-al-principio-condicion pred (rest lista)))))))
 
-(mueve-al-principio-condicion number? '(a b)) ; ⇒ '(a b)
-(mueve-al-principio-condicion number? '(a b c 1 d 1 e)) ; ⇒ (1 a b c d 1 e)
-(mueve-al-principio-condicion number? '(1 a b 1 c)) ; ⇒ (1 a b 1 c)
-(mueve-al-principio-condicion number? '(a b c d)) ; ⇒ '(a b c d)
+;(mueve-al-principio-condicion number? '(a b)) ; ⇒ '(a b)
+;(mueve-al-principio-condicion number? '(a b c 1 d 1 e)) ; ⇒ (1 a b c d 1 e)
+;(mueve-al-principio-condicion number? '(1 a b 1 c)) ; ⇒ (1 a b 1 c)
+;(mueve-al-principio-condicion number? '(a b c d)) ; ⇒ '(a b c d)
+
+;; c)
+
+(define (aux-check p a b)
+  (if (p (first a) (first b))
+      (cons (first a) (first b))
+      '()))
+
+(define (elimina-vacio par)
+  (if (null? (first par))
+      (rest par)
+      par))
+
+(define (comprueba pred lista1 lista2)
+  (if (or (null? lista1) (null? lista2))
+      '()
+      (elimina-vacio (cons (aux-check pred lista1 lista2)
+                           (comprueba pred (rest lista1) (rest lista2)) ))))
+
+(comprueba (lambda (x y)
+             (= (string-length (symbol->string x)) y))
+           '(este es un ejercicio de examen) 
+           '(2 1 2 9 1 6))
+; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
+
+(comprueba (lambda (x y)
+              (= (string-length x) (string-length y)))
+             '("aui" "a" "ae" "c" "aeiou")
+             '("hola" "b" "es" "que" "cinco"))
+; ⇒ (("a" . "b") ("ae" . "es") ("aeiou" . "cinco"))
