@@ -244,4 +244,18 @@
 ;( (lambda (a b) ((f3 cons) a b)) 3 4 )
 ; => '(3 . 4)
 
+;; Ejercicio 4
+
+;; a)
+
+(define (contar-datos-iguales-fos l)
+  (length (filter (lambda (c) (equal? (car c) (cdr c)) )) ))
+
+(contar-datos-iguales-fos 
+   '((2 . 3) ("hola" . "hola") (\#a . \#a) (true . false))) 
+; ⇒ 2
+(contar-datos-iguales-fos 
+   '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) 
+; ⇒ 0
+
 
