@@ -249,13 +249,27 @@
 ;; a)
 
 (define (contar-datos-iguales-fos l)
-  (length (filter (lambda (c) (equal? (car c) (cdr c)) )) ))
+  (length (filter (lambda (c) (equal? (car c) (cdr c)) ) l) ))
 
-(contar-datos-iguales-fos 
-   '((2 . 3) ("hola" . "hola") (\#a . \#a) (true . false))) 
+;(contar-datos-iguales-fos 
+;   '((2 . 3) ("hola" . "hola") (\#a . \#a) (true . false))) 
 ; ⇒ 2
-(contar-datos-iguales-fos 
-   '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) 
+; 
+;   '((2 . "hola") ("hola" . 3) (\#a . true) (\#b . false))) 
 ; ⇒ 0
 
+;; b)
+
+(define (expande-pareja l)
+  (cond
+    ((null? l) '())
+    ((= 0 (cdr l)) '())
+    (else (cons (car l) (expande-pareja (cons (car l) (- (cdr l) 1) )  )) )
+    ))
+
+(define (expande-lista-fos l)
+  (map expande-pareja l))
+
+(expande-lista-fos '((#t . 3) ("LPP" . 2) (b . 4))) 
+; ⇒ '(#t #t #t "LPP" "LPP" b b b b))
 
