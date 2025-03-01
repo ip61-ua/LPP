@@ -145,5 +145,103 @@
 (define (ordena-cartas l)
   (ordena-genérica l (lambda (a b) (< (valor-carta a) (valor-carta b)))))
 
-(ordena-cartas '(Q♠ J♣ 5♣ Q♥ J♦)) ; ⇒ '(5♣ J♣ J♦ Q♠ Q♥)
+;(ordena-cartas '(Q♠ J♣ 5♣ Q♥ J♦)) ; ⇒ '(5♣ J♣ J♦ Q♠ Q♥)
+
+;; Ejercicio 3
+
+;; a)
+
+; FOS. Esto es Javascript
+
+;(map (lambda (x)
+;         (cond 
+;            ((symbol? x) (symbol->string x))
+;            ((number? x) (number->string x))
+;            ((boolean? x) (if x "#t" "#f"))
+;            (else "desconocido"))) '(1 #t hola #f (1 . 2))) ; ⇒ ("1" "#t" "hola" "#f" "desconocido") ;; Importante lo devuelve sin quote
+
+;(filter (lambda (x) (equal? (string-ref (symbol->string x) 1) #\a))
+;        '(alicante barcelona madrid almería)) ; ⇒ (barcelona madrid) ;; Fíjate que lo hace sin quote
+
+;(foldr (lambda (dato resultado) (string-append dato "*" resultado)) ;; <---- foldr
+;       "" ; <ESTO>                      ;; <ESTO> es el valor-acumulador e inicializador. Si la lista <PARAM 2> es vacía, solo devuelve <ESTO>. En la 1a exec, resultado valdría <ESTO>
+;       '("Hola")) ; ⇒ "Hola*que*tal*"  ;; Para foldr: una lista, para el lambda de dentro una variable (un elem de la lista)
+
+;; Importante: (cons '(9) '(1)) => ((9) 1)             append => lists + lista
+;;             (cons 9 '(1)) => (9 1)                  cons => elemento + lista
+;;             (append '(9) 1) => (9 . 1)   => pareja
+;;             (append '(9) '(1)) => (9 1)  => lista
+;(append '(9) '(1))
+
+;(foldr append '() '((1 2) (3 4 5) (6 7) (8))) ; ⇒ (1 2 3 4 5 6 7 8)
+
+;(foldl (lambda (dato resultado)
+;        (string-append
+;          (symbol->string (car dato))
+;          (symbol->string (cdr dato))
+;          resultado)) "" '((a . b) (hola . adios) (una . pareja))) ; ⇒ "unaparejaholaadiosab"
+
+;(foldr (lambda (dato resultado)
+;           (cons (+ (car resultado) dato)
+;                 (+ (cdr resultado) 1))) '(0 . 0) '(1 1 2 2 3 3)) ; ⇒ (12 . 6)
+
+;(apply + (map cdr '((1 . 3) (2 . 8) (2 . 4)))) ; ⇒ 15
+
+;(apply min
+;       (map car
+;           (filter (lambda (p) (> (car p) (cdr p))) 
+;                   '((3 . 1) (1 . 20) (5 . 2))))) ; ⇒ ((3 . 1) (5 . 2)) => (3 5) => 3
+
+;; b)
+
+; Los siguientes ejercicios utilizan esta definición de lista
+
+(define lista '((2 . 7) (3 . 5) (10 . 4) (5 . 5)))
+
+
+; Queremos obtener una lista donde cada número es la suma de las
+; parejas que son pares
+
+;(filter (lambda (x) (= (modulo x 2) 0))
+;        (map (lambda (x) (+ (car x)
+;                                 (cdr x)))
+;               lista))
+; ⇒ (8 14 10)
+
+; Queremos obtener una lista de parejas invertidas donde la "nueva"
+; parte izquierda es mayor que la derecha.
+
+;(filter (lambda (c) (> (car c) (cdr c)))
+;        (map (lambda (c) (cons (cdr c) (car c))) lista))
+; ⇒ ((7 . 2) (5 . 3))
+
+; Queremos obtener una lista cuyos elementos son las partes izquierda
+; de aquellas parejas cuya suma sea par.
+;(filter (lambda (x) (even? (+ (car x) (cdr x)))) lista)
+
+;(foldr (lambda (cur acc) (cons (car cur) acc))
+;       '()
+;       (filter (lambda (x) (even? (+ (car x) (cdr x)))) lista)
+;       )
+; ⇒ (3 10 5)
+
+; IMPORTANTE folr (cur, acc)
+
+;; c)
+
+(define (f1 x) (lambda (y z) (string-append y z x)))
+(define g1 (f1 "a"))
+; (g1 "clase" "lpp") ; => "claselppa"
+
+
+
+(define (f2 x) (lambda (y z) (list y x z)))
+(define g2 (f2 "lpp"))
+;(g2 "hola" "clase") ; => (list "hola" "lpp" "clase")
+
+
+(define (f3 g3) (lambda(z x) (g3 z x)))
+;( (lambda (a b) ((f3 cons) a b)) 3 4 )
+; => '(3 . 4)
+
 
