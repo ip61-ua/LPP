@@ -268,8 +268,63 @@
     ))
 
 (define (expande-lista-fos l)
-  (map expande-pareja l))
+  (foldr (lambda (cur acc) (append cur acc))
+         '()
+         (map expande-pareja l)))
 
-(expande-lista-fos '((#t . 3) ("LPP" . 2) (b . 4))) 
+;(expande-lista-fos '((#t . 3) ("LPP" . 2) (b . 4))) 
 ; ⇒ '(#t #t #t "LPP" "LPP" b b b b))
+
+;; c)
+
+(define (comprueba-simbolos-fos l1 l2)
+  (filter (lambda (x) (not (null? x)))
+          (map (lambda (a b) (if (= (string-length(symbol->string a)) b)
+                                 (cons a b)
+                                 '())) l1 l2)))
+
+;(comprueba-simbolos-fos '(este es un ejercicio de examen) '(2 1 2 9 1 6))
+; ⇒ ((un . 2) (ejercicio . 9) (examen . 6))
+
+;; Ejercicio 5
+
+;; a)
+
+(define (suma-aux n)
+  (lambda (a) (cons (+ n (car a)) (cdr a))))
+
+(define (suma-n-izq n l)
+  (map (suma-aux n) l))
+
+;(suma-n-izq 10 '((1 . 3) (0 . 9) (5 . 8) (4 . 1)))
+; ⇒ ((11 . 3) (10 . 9) (15 . 8) (14 . 1))
+
+;; b)
+
+(define (busca-mayor mayor? lista)
+  (foldl (lambda (cur acc) (if (mayor? cur acc) cur acc)) (first lista) (rest lista)))
+
+;; (busca-mayor > '(1 2 3 4 1 2 -1))
+
+
+;; c)
+
+(define (todos-menores? lista n)
+  (for-all? (lambda (a) (< (busca-mayor > a) n)) lista))
+
+;(todos-menores? '((10 30 20) (1 50 30) (30 40 90)) 100) ; ⇒ #t
+;(todos-menores? '((10 30 20) (1 50 30) (30 40 90)) 90) ; ⇒ #f
+;(todos-menores? '((10 30 20) (1 50 30) (30 40 90)) 55) ; ⇒ #f
+
+
+
+
+
+
+
+
+
+
+
+
 
