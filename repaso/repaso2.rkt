@@ -125,11 +125,11 @@
 
 ; 1. Vemos que g depende de x.
 (define (g x)
-  (lambda (y) (+ y x)))
+  (+ 255 x))
 
 ; 2. f depende de g
 (define (f1 g)
-  (lambda (y) ((g y) 3)))
+  (lambda (y) (g y)))
 
 ; 3. la función f depende de la función g
 ((f1 g) 3) ; -> 6
@@ -153,4 +153,12 @@
 ;    - Devuelve una procedimiento que acepta un parámetro.
 ;    - Existe una relación en f1 con con el procedure g.
 ; 
-; 
+; Podemos plantear que dentro de f1 se llega a llamar a g. La llamada a g
+; debe producirse con un parámetro.
+;
+; Podemos aprovechar que f1 retorna una función que puede llamarse con un
+; parámetro y hacer que ese parámetro lo procese g. Coincidiendo en como
+; se invoca la función f1 en cuanto a número de argumentos se refiere.
+;
+; La solución propuesta final propone que f1 sea un "wrapper" de la función
+; g.
