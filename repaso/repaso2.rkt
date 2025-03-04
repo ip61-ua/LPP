@@ -96,4 +96,61 @@
       (resultados-funcs-v2-recursivo lista-funcs n)))
 
 ; Test
-(resultados-funcs-v2 (list cuadrado doble suma-3) 6) ;=> (36 12 9)
+;(resultados-funcs-v2 (list cuadrado doble suma-3) 6) ;=> (36 12 9)
+
+;; Ejercicio 4
+
+; a)
+;
+; (define f ______)
+; ((f) 5) -> ?
+;
+; b)
+;
+; (define (g x)
+;   ______ )
+;
+; (define (f g)
+;   ______ )
+;
+; ((f g) 3) → ?
+
+; Propuesta
+
+; a)
+(define f (lambda () +))
+((f) 5) ; -> 5
+
+; b)
+
+; 1. Vemos que g depende de x.
+(define (g x)
+  (lambda (y) (+ y x)))
+
+; 2. f depende de g
+(define (f1 g)
+  (lambda (y) ((g y) 3)))
+
+; 3. la función f depende de la función g
+((f1 g) 3) ; -> 6
+
+; Dado que en el apartado 3 observamos que se ejecuta un procedimiento del
+; estilo ((algo) param) y no del tipo (algo param), como es "lo habitual".
+; Tal y como ocurre en (f1 g) que es un procedimiento.
+;
+; Esto quiere decir que f1 devuelve una función. Es interesante resaltar
+; que esta función tiene como parámetro g. La función g acepta un parámetro
+; x.
+;
+; Si en el apartado 3, el parámetro de la función es una función y no su
+; llamada; esto nos da la pista de que f1 se encargará del procesamiento
+; g.
+;
+; A su vez, la función lambda que genere f1 será llamada con un 3. Cosa la
+; cual nos indica que la función generada por f1 deberá tener un parámetro.
+;
+; A partir de aquí, sabemos de f1 lo siguiente:
+;    - Devuelve una procedimiento que acepta un parámetro.
+;    - Existe una relación en f1 con con el procedure g.
+; 
+; 
