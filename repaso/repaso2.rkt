@@ -40,8 +40,10 @@
                  2
                  2))
 
-(caja-puntero p2)
-(caja-puntero p3)
+;(caja-puntero p)
+;(caja-puntero p1)
+;(caja-puntero p2)
+;(caja-puntero p3)
 
 ; b) No es una lista porque el puntero que apunta al primer bloque
 ;    no puede definirse como tal.
@@ -62,3 +64,36 @@
 ;    Pese a esto, el esquema sí contiene listas pero p *no apunta
 ;    directamente* a una de estas listas. Por lo que no podemos
 ;    considerar que p sea una lista, sino una pareja.
+
+;; Ejercicio 3
+
+; Funciones del ejemplo
+(define (cuadrado x) (* x x))
+(define (doble x) (* 2 x))
+(define (suma-3 x) (+ 3 x))
+
+; Resolución FOS
+(define (mi-aplica-funcs n)
+  (lambda (f) (f n)))
+
+(define (resultados-funcs lista-funcs n)
+  (map (mi-aplica-funcs n) lista-funcs)) ;; IMPORTANTE: (map <fn> <list>)
+
+; Resolución recursiva
+(define (mi-aplica-funcs-v2 l n)
+  ((first l) n))
+
+(define (volver-resultados-funcs-v2 l n)
+  (resultados-funcs-v2 (rest l) n))
+
+(define (resultados-funcs-v2-recursivo l n)
+  (cons (mi-aplica-funcs-v2 l n)
+        (volver-resultados-funcs-v2 l n)))
+
+(define (resultados-funcs-v2 lista-funcs n)
+  (if (null? lista-funcs)
+      '()
+      (resultados-funcs-v2-recursivo lista-funcs n)))
+
+; Test
+(resultados-funcs-v2 (list cuadrado doble suma-3) 6) ;=> (36 12 9)
