@@ -230,9 +230,26 @@
       (cons (cons n palo) (construye-baraja-aux palo (+ n 1)) )))
 
 (define (construye-baraja)
-  (foldr (lambda (cur acc) (append acc (construye-baraja-aux cur 1)))
+  (foldl (lambda (cur acc) (append acc (construye-baraja-aux cur 1)))
          (construye-baraja-aux (first palos-cartas) 1)
          (rest palos-cartas)
          ))
 
 ;(construye-baraja)
+
+; b)
+
+(define suma-solo-filt
+  (lambda (cur acc) (+ acc (car cur))))
+
+(define (filter-palos filt l)
+  (filter (lambda (x) (equal? (symbol->string filt)
+                              (symbol->string (cdr x)))) l))
+
+(define (total-palo filt l)
+  (foldr suma-solo-filt
+         0
+         (filter-palos filt l)
+         ))
+
+(total-palo 'bastos '((3 . oros)(4 . bastos)(1 . espadas)(8 . bastos))) ; → 12
