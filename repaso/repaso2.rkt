@@ -218,5 +218,21 @@
 ;(intercalar '(1 a)) ; => '(1 a)
 ;(intercalar '(1 2 a b)) ; => '(1 a 2 b)
 
+;; Ejercicio 6
 
-     
+; a)
+
+(define palos-cartas '(oros copas espadas bastos))
+
+(define (construye-baraja-aux palo n)
+  (if (>= n 13)
+      '()
+      (cons (cons n palo) (construye-baraja-aux palo (+ n 1)) )))
+
+(define (construye-baraja)
+  (foldr (lambda (cur acc) (append acc (construye-baraja-aux cur 1)))
+         (construye-baraja-aux (first palos-cartas) 1)
+         (rest palos-cartas)
+         ))
+
+;(construye-baraja)
