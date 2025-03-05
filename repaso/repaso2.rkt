@@ -118,8 +118,9 @@
 ; Propuesta
 
 ; a)
+
 (define f (lambda () +))
-((f) 5) ; -> 5
+;((f) 5) ; -> 5
 
 ; b)
 
@@ -132,7 +133,7 @@
   (lambda (y) (g y)))
 
 ; 3. la función f depende de la función g
-((f1 g) 3) ; -> 6
+;((f1 g) 3) ; -> 6
 
 ; Dado que en el apartado 3 observamos que se ejecuta un procedimiento del
 ; estilo ((algo) param) y no del tipo (algo param), como es "lo habitual".
@@ -162,3 +163,60 @@
 ;
 ; La solución propuesta final propone que f1 sea un "wrapper" de la función
 ; g.
+
+
+;; Ejercicio 5
+
+; a)
+(define (primeros-n-recursivo l n)
+  (cons (first l)
+        (primeros-n (rest l)
+                    (- n 1))))
+
+(define (primeros-n lista n)
+  (if (or (null? lista)
+          (= n 0))
+      '()
+      (primeros-n-recursivo lista n)))
+
+;(primeros-n '(1 2 3 4 5 6) 2) ; => (1 2)
+
+; propuesta usando FOS
+(define (n-ultimos-fos lista n)
+  (reverse (primeros-n (reverse lista) n)))
+
+; propuesta puramente recursiva
+(define (n-ultimos lista n)
+  (cond
+    ((or (null? lista) (= n 0)) '())
+    ((<= (length lista) n) lista)
+    ((> (length lista) n) (n-ultimos (rest lista) n))))
+
+;(n-ultimos '(1 2 3 4 5 6) 3) ; => (4 5 6)
+
+; b)
+
+(define (no-puedo-seguir l s)
+  (or (null? l) (= s 0)))
+
+(define (mi-intercalar-recursivo l s)
+  (mi-intercalar (rest l) (- s 1)))
+
+
+(define (mi-intercalar l s)
+  (if (no-puedo-seguir l s)
+      '()
+      (cons (first l)
+            (cons (first (n-ultimos l s))
+                  (mi-intercalar-recursivo l s) ))))
+
+(define (intercalar lista)
+  (mi-intercalar lista (/ (length lista) 2)))
+
+;(intercalar '(1 2 3 4 a b c d)) ; => '(1 a 2 b 3 c 4 d)
+;(intercalar '()) ; => '()
+;(intercalar '(1 a)) ; => '(1 a)
+;(intercalar '(1 2 a b)) ; => '(1 a 2 b)
+
+
+     
