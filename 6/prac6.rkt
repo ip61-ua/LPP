@@ -119,7 +119,13 @@
                     (koch (- nivel 1) trazo))
       (kline trazo)))
 
-(koch 6 0.01)
+;(koch 6 0.01)
 
+; 5b
+(define (copo-nieve nivel trazo)
+  (above/align "center"              
+                (beside (rotate 60 (koch nivel trazo))
+                        (rotate -60 (koch nivel trazo)))
+                (rotate 180 (koch nivel trazo))))
 
-
+;(copo-nieve 3 10)
