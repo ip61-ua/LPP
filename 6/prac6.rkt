@@ -76,6 +76,31 @@
 (define (binario-a-decimal l)
   (binario-a-decimal-iter l 0))
 
-(binario-a-decimal '(1 1 1 1)) ; ⇒ 15
-(binario-a-decimal '(1 1 0)) ; ⇒ 6
-(binario-a-decimal '(1 0)) ; ⇒ 2
+;(binario-a-decimal '(1 1 1 1)) ; ⇒ 15
+;(binario-a-decimal '(1 1 0)) ; ⇒ 6
+;(binario-a-decimal '(1 0)) ; ⇒ 2
+
+;4
+(define mi-dic (make-dic))
+(put 1 10 mi-dic) ; ⇒ 10
+(get 1 mi-dic) ; ⇒ 10
+(key-exists? 2 mi-dic) ; ⇒ #f
+
+(define (store where d what)
+  (put where what d))
+
+(define (memo-or-pascal f c d)
+  (if (key-exists? (cons f c) d)
+      (get (cons f c) d)
+      (store (cons f c) d (pascal f c))
+      ))
+
+(define (pascal-memo fila col d)
+   (cond ((= col 0) 1)
+         ((= col fila) 1)
+         (else (+ (pascal (- fila 1) (- col 1))
+                  (pascal (- fila 1) col) ))))
+
+(define diccionario (make-dic))
+(pascal-memo 8 4 diccionario) ; ⇒ 70
+(pascal-memo 40 20 diccionario) ; ⇒ 137846528820
