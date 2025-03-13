@@ -30,7 +30,6 @@
 ;(min-max-iter '(5 9 12 -2 5 0 4) (cons 2 2)) ; ⇒ (-2 . 12)
 
 ; 2a
-
 (define (expande-pareja-iter p acc)
   (if (or (null? p) (= (cdr p) 0))
       acc
@@ -39,6 +38,15 @@
 (define (expande-pareja p)
   (expande-pareja-iter p '()))
 
+(define (expande-parejas-iter l acc)
+  (if (null? l)
+      acc
+      (expande-parejas-iter (rest l) (append acc (expande-pareja-iter (first l) '())))
+      ))
+
+(define (expande-parejas . l)
+  (expande-parejas-iter l '()))
+
 (expande-pareja (cons 'a 4)) ; ⇒ (a a a a)
-;(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
+(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
 
