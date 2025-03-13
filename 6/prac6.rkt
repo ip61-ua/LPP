@@ -2,12 +2,30 @@
 (require "lpp.rkt")
 
 ; 1a
+(define (concat lista)
+  (concat-iter lista ""))
+
 (define (concat-iter l acc)
   (if (null? l)
       acc
       (concat-iter (rest l) (string-append acc (first l)))))
   
+(concat  '("hola" "y" "adiós")) ; ⇒ "holayadiós"
 (concat-iter '("hola" "y" "adiós") "") ; ⇒ "holayadiós"
 
+; 1b
+(define (min-max lista)
+  (min-max-iter lista (cons 0 0)))
 
+(define (min-max-iter l acc)
+  (cond
+    ((null? l) acc)
+    ((< (first l) (car acc)) (min-max-iter (rest l) (cons (first l) (cdr acc))))
+    ((> (first l) (cdr acc)) (min-max-iter (rest l) (cons (car acc) (first l))))
+    (else (min-max-iter (rest l) acc)))
+    )
+
+(min-max '(2 5 9 12 5 0 4)) ; ⇒ (0 . 12)
+(min-max '(3 2 -8 4 10 0))  ; ⇒ (-8 . 10)
+(min-max-iter '(5 9 12 -2 5 0 4) (cons 2 2)) ; ⇒ (-2 . 12)
 
