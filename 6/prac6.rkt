@@ -92,15 +92,21 @@
 (define (memo-or-pascal f c d)
   (if (key-exists? (cons f c) d)
       (get (cons f c) d)
-      (store (cons f c) d (pascal f c))
+      (put (cons f c) (pascal-memo f c d) d)
       ))
 
 (define (pascal-memo fila col d)
    (cond ((= col 0) 1)
          ((= col fila) 1)
-         (else (+ (pascal (- fila 1) (- col 1))
-                  (pascal (- fila 1) col) ))))
+         (else (+ (memo-or-pascal (- fila 1) (- col 1) d)
+                  (memo-or-pascal (- fila 1) col d) ))))
 
 (define diccionario (make-dic))
 (pascal-memo 8 4 diccionario) ; ⇒ 70
 (pascal-memo 40 20 diccionario) ; ⇒ 137846528820
+
+; 5a
+(define (koch nivel trazo))
+
+
+
