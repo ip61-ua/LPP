@@ -64,5 +64,18 @@
       i
       (mi-foldl f (f (first l) i) (rest l))))
 
-(mi-foldl string-append "****" '("hola" "que" "tal")) ; ⇒ "talquehola****"
-(mi-foldl cons '() '(1 2 3 4)) ; ⇒ (4 3 2 1)
+;(mi-foldl string-append "****" '("hola" "que" "tal")) ; ⇒ "talquehola****"
+;(mi-foldl cons '() '(1 2 3 4)) ; ⇒ (4 3 2 1)
+
+; 3b
+(define (binario-a-decimal-iter l acc)
+  (if (null? l)
+      acc
+      (binario-a-decimal-iter (rest l) (+ (* 2 acc) (first l)))))
+
+(define (binario-a-decimal l)
+  (binario-a-decimal-iter l 0))
+
+(binario-a-decimal '(1 1 1 1)) ; ⇒ 15
+(binario-a-decimal '(1 1 0)) ; ⇒ 6
+(binario-a-decimal '(1 0)) ; ⇒ 2
