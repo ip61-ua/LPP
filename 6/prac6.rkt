@@ -102,11 +102,24 @@
                   (memo-or-pascal (- fila 1) col d) ))))
 
 (define diccionario (make-dic))
-(pascal-memo 8 4 diccionario) ; ⇒ 70
-(pascal-memo 40 20 diccionario) ; ⇒ 137846528820
+;(pascal-memo 8 4 diccionario) ; ⇒ 70
+;(pascal-memo 40 20 diccionario) ; ⇒ 137846528820
 
 ; 5a
-(define (koch nivel trazo))
+(require 2htdp/image)
+
+(define (kline t) (line t 0 "black"))
+
+(define (koch nivel trazo)
+  (if (< 0 nivel) 
+      (beside/align "bottom"
+                    (koch (- nivel 1) trazo)
+                    (rotate 60 (koch (- nivel 1) trazo))
+                    (rotate -60 (koch (- nivel 1) trazo))
+                    (koch (- nivel 1) trazo))
+      (kline trazo)))
+
+(koch 6 0.01)
 
 
 
