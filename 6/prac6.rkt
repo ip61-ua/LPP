@@ -47,6 +47,13 @@
 (define (expande-parejas . l)
   (expande-parejas-iter l '()))
 
-(expande-pareja (cons 'a 4)) ; ⇒ (a a a a)
-(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
+;(expande-pareja (cons 'a 4)) ; ⇒ (a a a a)
+;(expande-parejas '(#t . 3) '("LPP" . 2) '(b . 4)) ; ⇒ (#t #t #t "LPP" "LPP" b b b b)
 
+; 2b
+(define (rotar n l)
+  (if (or (= 0 n) (null? l))
+      l
+      (rotar (- n 1) (append (list-tail l 1) (list (first l))))))
+
+(rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
