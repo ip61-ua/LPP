@@ -129,3 +129,36 @@
                 (rotate 180 (koch nivel trazo))))
 
 ;(copo-nieve 3 10)
+
+; 6
+(define (caso-base-sierpinski tam)
+  (above (beside (circle tam "outline" "blue")
+                 (circle tam "outline" "blue")
+                 (circle tam "outline" "blue"))
+         (beside (circle tam "outline" "blue")
+                 (circle tam "solid" "blue")
+                 (circle tam "outline" "blue"))
+         (beside (circle tam "outline" "blue")
+                 (circle tam "outline" "blue")
+                 (circle tam "outline" "blue"))))
+
+(define (sierpinski-recursivo tam)
+  (above (beside (alfombra-sierpinski-f tam)
+                 (alfombra-sierpinski-f tam)
+                 (alfombra-sierpinski-f tam))
+         (beside (alfombra-sierpinski-f tam)
+                 (circle (* 3 tam) "solid" "blue")
+                 (alfombra-sierpinski-f tam))
+         (beside (alfombra-sierpinski-f tam)
+                 (alfombra-sierpinski-f tam)
+                 (alfombra-sierpinski-f tam))))
+
+(define (alfombra-sierpinski-f tam)
+  (if (< (/ tam 2) 20)
+      (caso-base-sierpinski tam)
+      (sierpinski-recursivo (/ tam 3))))
+
+(define (alfombra-sierpinski tam)
+  (alfombra-sierpinski-f (/ tam 2)))
+
+(alfombra-sierpinski 360)
