@@ -56,4 +56,13 @@
       l
       (rotar (- n 1) (append (list-tail l 1) (list (first l))))))
 
-(rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
+;(rotar 4 '(a b c d e f g)) ; ⇒ (e f g a b c d)
+
+; 3a
+(define (mi-foldl f i l)
+  (if (null? l)
+      i
+      (mi-foldl f (f (first l) i) (rest l))))
+
+(mi-foldl string-append "****" '("hola" "que" "tal")) ; ⇒ "talquehola****"
+(mi-foldl cons '() '(1 2 3 4)) ; ⇒ (4 3 2 1)
