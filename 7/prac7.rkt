@@ -119,8 +119,24 @@
          l))
 
 ;(todos-positivos-fos? '(1 (2 (3 (3))) 4)) ; ⇒ #t
-(todos-positivos-fos? '(1 (2 (3 (-3))) 4)) ; ⇒ #f
-(todos-positivos-fos? '(1 (2 (3 (99999999))) 4)) ; ⇒ #t
-(todos-positivos-fos? '()) ; ⇒ #t
-(todos-positivos-fos? '(()())) ; ⇒ #t
-(todos-positivos-fos? '(()(-1))) ; ⇒ #f
+;(todos-positivos-fos? '(1 (2 (3 (-3))) 4)) ; ⇒ #f
+;(todos-positivos-fos? '(1 (2 (3 (99999999))) 4)) ; ⇒ #t
+;(todos-positivos-fos? '()) ; ⇒ #t
+;(todos-positivos-fos? '(()())) ; ⇒ #t
+;(todos-positivos-fos? '(()(-1))) ; ⇒ #f
+
+; Ejercicio 3
+
+(define (sigue-buscando a pred l)
+  (cons a (cumplen-predicado pred (rest l))))
+
+(define (cumplen-predicado pred lista)
+  (cond
+    ((null? lista) '())
+    ((not (hoja? (first lista))) (sigue-buscando (cumplen-predicado pred (first lista)) pred lista))
+    ((pred (first lista)) (sigue-buscando (first lista) pred lista))
+    (else (cumplen-predicado pred (rest lista)))))
+
+(cumplen-predicado even? '(1 2 4 6)) ; ⇒ (2 4 6)
+(cumplen-predicado even? '(1 (2 (3 (4))) (5 6))) ; ⇒ (2 4 6)
+(cumplen-predicado pair? '(((1 . 2) 3 (4 . 3) 5) 6)) ; ⇒ ((1 . 2) (4 . 3))
