@@ -192,10 +192,35 @@
            (else x)))
        lista))
 
-(sustituye-elem-fos 'c 'h '(c c (c))) ; ⇒ (h h (h)))
-(sustituye-elem-fos 'c 'h '(h)) ; ⇒ ()
-(sustituye-elem-fos 'c 'h '()) ; ⇒ ()
-(sustituye-elem-fos 'c 'h '(a b (c d (e c)) c (f (c) g))) ; ⇒ (a b (h d (e h)) h (f (h) g))
+;(sustituye-elem-fos 'c 'h '(c c (c))) ; ⇒ (h h (h)))
+;(sustituye-elem-fos 'c 'h '(h)) ; ⇒ ()
+;(sustituye-elem-fos 'c 'h '()) ; ⇒ ()
+;(sustituye-elem-fos 'c 'h '(a b (c d (e c)) c (f (c) g))) ; ⇒ (a b (h d (e h)) h (f (h) g))
 
+; b
+(define (max-lvl-pair . lp)
+  (cond
+    ((null? lp) '())
+    ((null? (rest lp)) (first lp))
+    ((> (cdr (first lp)) (cdr (second lp))) (max-lvl-pair (cons (first lp) (rest (rest lp)))))
+    (else (max-lvl-pair (rest lp)))))
+
+(max-lvl-pair '(qt . 5) '(gtk . 4) '(electron . -1))
+(max-lvl-pair '(qt . 5) '(gtk . 4) '(electron . 99999999))
+(max-lvl-pair '(qt . -1) '(gtk . 4) '(electron . -1))
+
+(define (nivel-mas-profundo-recursivo l)
+  (cons (car l)
+        (+ 1 (cdr l)))) 
+
+(define (nivel-mas-profundo l)
+  (max-lvl-pair (cond
+                        ((null? l) '())
+                        ((not (hoja? (first l))) (nivel-mas-profundo-recursivo (nivel-mas-profundo (first l))))
+                        (else (cons (first l) 0)))
+                (if (null? l) '() (nivel-mas-profundo (rest l)))))
+
+(nivel-mas-profundo '(2 (3))) ; ⇒ (3 . 2)
+(nivel-mas-profundo '((2) (3 (4)((((((5))) 6)) 7)) 8)) ; ⇒ (5 . 8)
 
 
