@@ -198,29 +198,42 @@
 ;(sustituye-elem-fos 'c 'h '(a b (c d (e c)) c (f (c) g))) ; ⇒ (a b (h d (e h)) h (f (h) g))
 
 ; b
-(define (max-lvl-pair . lp)
+(define (max-lvl-pair lp)
   (cond
     ((null? lp) '())
-    ((null? (rest lp)) (first lp))
+    ((or (null? (rest lp)) (null? (second lp))) (first lp))
     ((> (cdr (first lp)) (cdr (second lp))) (max-lvl-pair (cons (first lp) (rest (rest lp)))))
     (else (max-lvl-pair (rest lp)))))
 
-(max-lvl-pair '(qt . 5) '(gtk . 4) '(electron . -1))
-(max-lvl-pair '(qt . 5) '(gtk . 4) '(electron . 99999999))
-(max-lvl-pair '(qt . -1) '(gtk . 4) '(electron . -1))
+;(max-lvl-pair '((qt . 5) (gtk . 4) (electron . -1)))
+;(max-lvl-pair '((qt . 5) (gtk . 4) (electron . 99999999)))
+;(max-lvl-pair '((qt . -1) (gtk . 4) (electron . -1)))
 
 (define (nivel-mas-profundo-recursivo l)
   (cons (car l)
         (+ 1 (cdr l)))) 
 
 (define (nivel-mas-profundo l)
-  (max-lvl-pair (cond
+  (max-lvl-pair (cons (cond
                         ((null? l) '())
                         ((not (hoja? (first l))) (nivel-mas-profundo-recursivo (nivel-mas-profundo (first l))))
-                        (else (cons (first l) 0)))
-                (if (null? l) '() (nivel-mas-profundo (rest l)))))
+                        (else (cons (first l)
+                                    1)))
+                      (if (null? l) '() (list (nivel-mas-profundo (rest l)))))))
 
-(nivel-mas-profundo '(2 (3))) ; ⇒ (3 . 2)
-(nivel-mas-profundo '((2) (3 (4)((((((5))) 6)) 7)) 8)) ; ⇒ (5 . 8)
+(define (nivel-mas-profundo-fos l)
+  (foldr (lambda (cur acc) (max-lvl-pair (list acc cur)))
+         '(0 . 0)
+         (map (lambda (x)
+                (if (hoja? x)
+                    (cons x 1)
+                    (nivel-mas-profundo-recursivo (nivel-mas-profundo-fos x))))
+              l)))
 
+;(nivel-mas-profundo-fos '(2 (3))) ; ⇒ (3 . 2)
+;(nivel-mas-profundo-fos '((2) (3 (4) ((((((5))) 6)) 7)) 8)) ; ⇒ (5 . 8)
 
+; 5
+(define lista1 '(((a b) ((c))) (d) e))
+(define lista2 '(((1 2) ((3))) (4) 5))
+(mezclar lista1 lista2 2) ; ⇒ (((1 2) ((3))) (d) e)
