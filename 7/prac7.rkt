@@ -258,3 +258,41 @@
 ;(pinta-lista (subir-lvl lista1))
 (define lista3 (mezclar lista1 lista2 2))
 ;(mezclar lista1 lista2 2) ; ⇒ (((1 2) ((3))) (d) e)
+
+; b.1
+(define lista-1 '(a (b c) (d))) 
+;     * 
+;   / | \ 
+;  a  *  *
+;    / \  \ 
+;   b   c  d
+
+(define lista-2 '((e) (f) (g)))
+;     * 
+;   / | \ 
+;  *  *  * 
+; /  /    \ 
+;e  f      g
+
+(define (intersecta lista-1 lista-2)
+  (append (cond ((null? lista-1) '())
+                ((null? lista-2) '())
+                ((and (hoja? (first lista-1))
+                      (hoja? (first lista-2))) (list (cons (first lista-1) (first lista-2))))
+                ((and (not (hoja? (first lista-1)))
+                      (not (hoja? (first lista-2)))) (intersecta (first lista-1) (first lista-2)))
+                (else '()))
+          (if (or (null? lista-1)
+                  (null? lista-2)) '() (intersecta (rest lista-1) (rest lista-2)) )))
+
+(pinta-lista (intersecta lista-1 lista-2))
+; ⇒ (((b . f)) ((d . g)))
+;     *
+;     | \
+;     *  *
+;    /    \
+;  (b.f)  (d.g)
+
+
+;(intersecta '(a b) '(c d)) ; ⇒ '((a . c) (b . d))
+;(intersecta '(a (b) (c)) '(d e (f))) ; ⇒ '((a . d) ((c . f)))
