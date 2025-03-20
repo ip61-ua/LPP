@@ -76,3 +76,30 @@
 
 (map (lambda (elem)
          (nivel-hoja-fos 'a elem)) lista-b2) ; (-1 2 -1 3)
+
+; Ejercicio 2
+; a
+
+; recursivo puro
+(define (concatena-recursivo a l)
+  (string-append a (concatena (rest l))))
+
+(define (concatena l)
+  (cond
+    ((null? l) "")
+    ((hoja? (first l)) (concatena-recursivo (symbol->string (first l)) l))
+    (else (concatena-recursivo (concatena (first l)) l))))
+
+; con fos
+(define (concatena-fos l)
+  (foldr (lambda (cur acc)
+           (if (hoja? cur)
+               (string-append (symbol->string cur) acc)
+               (string-append (concatena-fos cur) acc)))
+         ""
+         l))
+
+(string-append "PL" "Man")
+
+(concatena-fos '(a b (c) d)) ; ⇒ "abcd"
+(concatena-fos '(a (((b)) (c (d (e f (g))) h)) i)) ; ⇒ "abcdefghi"
