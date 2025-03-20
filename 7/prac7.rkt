@@ -99,7 +99,5 @@
          ""
          l))
 
-(string-append "PL" "Man")
-
 (concatena-fos '(a b (c) d)) ; ⇒ "abcd"
 (concatena-fos '(a (((b)) (c (d (e f (g))) h)) i)) ; ⇒ "abcdefghi"
