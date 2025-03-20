@@ -19,7 +19,7 @@
 ; L2 *    *    d   *
 ; L3 b   c *       a
 ; L4       a
-(pinta-lista lista-b2)
+;(pinta-lista lista-b2)
 
 ; c
 (define (cuadrado-estruct lista)
@@ -29,7 +29,7 @@
                (cuadrado-estruct (first lista))    ; El argumento aquí puede ser una hoja o lista 
                (cuadrado-estruct (rest lista)))))) ; Aquí siempre es una lista
 
-(pinta-lista (cuadrado-estruct lista-b1))
+;(pinta-lista (cuadrado-estruct lista-b1))
 ; 1 llamada
 ; first: (cuadrado-estruct (first lista)) ; (2 (3))
 ; rest:  (cuadrado-estruct (rest lista))  ; ((4 2) ((2) 3))
@@ -74,8 +74,7 @@
                                           (map (lambda (elem) (nivel-hoja-fos dato elem))
                                                ld)))))
 
-(map (lambda (elem)
-         (nivel-hoja-fos 'a elem)) lista-b2) ; (-1 2 -1 3)
+;(map (lambda (elem) (nivel-hoja-fos 'a elem)) lista-b2) ; (-1 2 -1 1)
 
 ; Ejercicio 2
 ; a
@@ -99,5 +98,29 @@
          ""
          l))
 
-(concatena-fos '(a b (c) d)) ; ⇒ "abcd"
-(concatena-fos '(a (((b)) (c (d (e f (g))) h)) i)) ; ⇒ "abcdefghi"
+;(concatena-fos '(a b (c) d)) ; ⇒ "abcd"
+;(concatena-fos '(a (((b)) (c (d (e f (g))) h)) i)) ; ⇒ "abcdefghi"
+
+; b
+(define (todos-positivos? l)
+  (or (null? l)
+      (if (hoja? (first l))
+          (and (>= (first l) 0) (todos-positivos? (rest l)))
+          (and (todos-positivos? (first l)) (todos-positivos? (rest l))))))
+
+(define (todos-positivos-fos-aux? x)
+  (if (hoja? x)
+      (>= x 0)
+      (todos-positivos-fos? x)))
+
+(define (todos-positivos-fos? l)
+  (foldr (lambda (cur acc) (and acc (todos-positivos-fos-aux? cur)))
+         #t
+         l))
+
+;(todos-positivos-fos? '(1 (2 (3 (3))) 4)) ; ⇒ #t
+(todos-positivos-fos? '(1 (2 (3 (-3))) 4)) ; ⇒ #f
+(todos-positivos-fos? '(1 (2 (3 (99999999))) 4)) ; ⇒ #t
+(todos-positivos-fos? '()) ; ⇒ #t
+(todos-positivos-fos? '(()())) ; ⇒ #t
+(todos-positivos-fos? '(()(-1))) ; ⇒ #f
