@@ -19,14 +19,14 @@
 ; L2 *    *    d   *
 ; L3 b   c *       a
 ; L4       a
-;(pinta-lista lista-b2)
+(pinta-lista lista-b2)
 
 ; c
 (define (cuadrado-estruct lista)
   (cond ((null? lista) '())
         ((hoja? lista) (* lista lista ))
         (else (cons
-               (cuadrado-estruct (first lista))    ; El argumento aquí puede ser una hoja o lista 
+               (cuadrado-estruct (first lista))    ; El argumento aquí puede ser una hoja o lista
                (cuadrado-estruct (rest lista)))))) ; Aquí siempre es una lista
 
 ;(pinta-lista (cuadrado-estruct lista-b1))
@@ -126,17 +126,46 @@
 ;(todos-positivos-fos? '(()(-1))) ; ⇒ #f
 
 ; Ejercicio 3
-
-(define (sigue-buscando a pred l)
-  (cons a (cumplen-predicado pred (rest l))))
-
 (define (cumplen-predicado pred lista)
   (cond
     ((null? lista) '())
-    ((not (hoja? (first lista))) (sigue-buscando (cumplen-predicado pred (first lista)) pred lista))
-    ((pred (first lista)) (sigue-buscando (first lista) pred lista))
-    (else (cumplen-predicado pred (rest lista)))))
+    ((not (hoja? (first lista))) (append (cumplen-predicado pred             ;ojito a este append
+                                                            (first lista))
+                                         (cumplen-predicado pred
+                                                            (rest lista))))
+    ((pred (first lista)) (cons (first lista)
+                                  (cumplen-predicado pred
+                                                   (rest lista))))
+    (else (cumplen-predicado pred
+                             (rest lista)))))
 
-(cumplen-predicado even? '(1 2 4 6)) ; ⇒ (2 4 6)
-(cumplen-predicado even? '(1 (2 (3 (4))) (5 6))) ; ⇒ (2 4 6)
-(cumplen-predicado pair? '(((1 . 2) 3 (4 . 3) 5) 6)) ; ⇒ ((1 . 2) (4 . 3))
+
+(define (cumplen-predicado-fos pred lista)
+  (foldr (lambda (cur acc)
+           (cond
+             ((null? cur) acc)
+             ((not (hoja? cur)) (append (cumplen-predicado-fos pred cur) acc))
+             ((pred cur) (append (list cur) acc))
+             (else acc)))
+         '()
+         lista))
+
+;(cumplen-predicado even? '(1 2 4 6)) ; ⇒ (2 4 6)
+;(cumplen-predicado even? '(1 (2 (3 (4))) (5 6))) ; ⇒ (2 4 6)
+;(cumplen-predicado pair? '(((1 . 2) 3 (4 . 3) 5) 6)) ; ⇒ ((1 . 2) (4 . 3))
+
+;(cumplen-predicado-fos even? '(1 2 4 6)) ; ⇒ (2 4 6)
+;(cumplen-predicado-fos even? '(1 (2 (3 (4))) (5 6))) ; ⇒ (2 4 6)
+;(cumplen-predicado-fos pair? '(((1 . 2) 3 (4 . 3) 5) 6)) ; ⇒ ((1 . 2) (4 . 3))
+
+;(foldr (lambda (cur acc) (append acc (list cur))) '() '(1 2 3 4 5 6))
+;(append (append '() (list 6)) (list 5))
+
+(define (busca-mayores n lista-num)
+  (cumplen-predicado (lambda (x) (> x 10)) lista-num))
+;(busca-mayores 10 '(-1 (20 (10 12) (30 (25 (15)))))) ; ⇒ (20 12 30 25 15)
+
+(define (empieza-por c l)
+  (cumplen-predicado-fos (lambda (x) (equal? (string-ref (symbol->string x) 0) c)) l))
+;(empieza-por #\m '((hace (mucho tiempo)) (en) (una galaxia ((muy  muy) lejana)))); ⇒ (mucho muy muy)
+
