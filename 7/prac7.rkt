@@ -58,3 +58,21 @@
 ; first 3          ; devolver * 3 3
 ; rest  ()         ; devolver ()
 
+; d
+(define (suma-1-si-mayor-igual-que-0 x)
+  (if (>= x 0)
+      (+ x 1)
+      x))
+
+(define (nivel-hoja-fos dato ld)
+  (if (hoja? ld)
+      (if (equal? ld dato)
+          0
+          -1)
+      (suma-1-si-mayor-igual-que-0 (foldr max
+                                          -1
+                                          (map (lambda (elem) (nivel-hoja-fos dato elem))
+                                               ld)))))
+
+(map (lambda (elem)
+         (nivel-hoja-fos 'a elem)) lista-b2) ; (-1 2 -1 3)
