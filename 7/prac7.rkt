@@ -169,3 +169,33 @@
   (cumplen-predicado-fos (lambda (x) (equal? (string-ref (symbol->string x) 0) c)) l))
 ;(empieza-por #\m '((hace (mucho tiempo)) (en) (una galaxia ((muy  muy) lejana)))); ⇒ (mucho muy muy)
 
+; 4
+; a
+(define (sustituye-elem elem-old elem-new lista)
+  (if (null? lista)
+      '()
+      (cons (cond
+              ((not (hoja? (first lista))) (sustituye-elem elem-old
+                                                           elem-new
+                                                           (first lista)))
+              ((equal? (first lista) elem-old) elem-new)
+              (else (first lista)))
+            (sustituye-elem elem-old elem-new (rest lista)))))
+
+(define (sustituye-elem-fos elem-old elem-new lista)
+  (map (lambda (x)
+         (cond
+           ((not (hoja? x)) (sustituye-elem-fos elem-old
+                                                elem-new
+                                                x))
+           ((equal? x elem-old) elem-new)
+           (else x)))
+       lista))
+
+(sustituye-elem-fos 'c 'h '(c c (c))) ; ⇒ (h h (h)))
+(sustituye-elem-fos 'c 'h '(h)) ; ⇒ ()
+(sustituye-elem-fos 'c 'h '()) ; ⇒ ()
+(sustituye-elem-fos 'c 'h '(a b (c d (e c)) c (f (c) g))) ; ⇒ (a b (h d (e h)) h (f (h) g))
+
+
+
