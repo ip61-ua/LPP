@@ -19,7 +19,7 @@
 ; L2 *    *    d   *
 ; L3 b   c *       a
 ; L4       a
-(pinta-lista lista-b2)
+;(pinta-lista lista-b2)
 
 ; c
 (define (cuadrado-estruct lista)
@@ -201,7 +201,8 @@
 (define (max-lvl-pair lp)
   (cond
     ((null? lp) '())
-    ((or (null? (rest lp)) (null? (second lp))) (first lp))
+    ((null? (rest lp)) (first lp))
+    ((null? (second lp)) (first lp))
     ((> (cdr (first lp)) (cdr (second lp))) (max-lvl-pair (cons (first lp) (rest (rest lp)))))
     (else (max-lvl-pair (rest lp)))))
 
@@ -234,6 +235,26 @@
 ;(nivel-mas-profundo-fos '((2) (3 (4) ((((((5))) 6)) 7)) 8)) ; ⇒ (5 . 8)
 
 ; 5
+(define (subir-lvl l)
+  (foldl (lambda (cur acc)
+           (if (hoja? cur)
+               acc
+               (append acc cur)))
+         '()
+         l))
+
+(define (mezclar lista1 lista2 n)
+  (map (lambda (x y)
+         (cond
+           ((= n 0) y)
+           ((not (hoja? x)) (mezclar x y (- n 1)))
+           (else x)
+           ))
+       lista1 lista2))
+
 (define lista1 '(((a b) ((c))) (d) e))
 (define lista2 '(((1 2) ((3))) (4) 5))
-(mezclar lista1 lista2 2) ; ⇒ (((1 2) ((3))) (d) e)
+;(pinta-lista lista1)
+;(pinta-lista (subir-lvl lista1))
+(define lista3 (mezclar lista1 lista2 2))
+;(mezclar lista1 lista2 2) ; ⇒ (((1 2) ((3))) (d) e)
