@@ -169,7 +169,7 @@
   (cumplen-predicado-fos (lambda (x) (equal? (string-ref (symbol->string x) 0) c)) l))
 ;(empieza-por #\m '((hace (mucho tiempo)) (en) (una galaxia ((muy  muy) lejana)))); ⇒ (mucho muy muy)
 
-; 4
+; Ejercicio 4
 ; a
 (define (sustituye-elem elem-old elem-new lista)
   (if (null? lista)
@@ -234,7 +234,7 @@
 ;(nivel-mas-profundo-fos '(2 (3))) ; ⇒ (3 . 2)
 ;(nivel-mas-profundo-fos '((2) (3 (4) ((((((5))) 6)) 7)) 8)) ; ⇒ (5 . 8)
 
-; 5
+; Ejercicio 5
 (define (subir-lvl l)
   (foldl (lambda (cur acc)
            (if (hoja? cur)
