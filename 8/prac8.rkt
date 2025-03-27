@@ -309,15 +309,20 @@
 ;(pinta-arbol arbol-quantico)
 
 (define (es-camino-bosque? l bosque)
-  (and (or (not (and (null? l) (null? bosque)))
-           (null? bosque))
+  (and (not (null? bosque))
        (or (es-camino? l (first bosque))
            (es-camino-bosque? l (rest bosque)))))
 
 (define (es-camino? lista arbol)
-  (or (null? lista)
-      (equal? (symbol->string (dato-arbol arbol)) (first lista))
-      (es-camino-bosque? (rest lista) (hijos-arbol arbol))))
+  (if (and (not (hoja-arbol? arbol)) (null? (rest lista)))
+      #f
+      (or (and (hoja-arbol? lista)
+               (equal? (dato-arbol arbol)
+                       (first lista)))
+          (and (equal? (dato-arbol arbol)
+                       (first lista))
+               (es-camino-bosque? (rest lista)
+                                  (hijos-arbol arbol))))))
 
 (check-equal? (es-camino? '(a b a) arbol-quantico) #t) ; ⇒ #t
 (check-equal? (es-camino? '(a b) arbol-quantico) #f) ; ⇒ #f
