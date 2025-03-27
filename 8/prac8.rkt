@@ -295,6 +295,33 @@
 (check-equal? (comprueba-raices-arbol-fos arbol3) '(1 (1) (1 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (1 (1) (1)) (1 (1)))
 (check-equal? (comprueba-raices-arbol-fos arbol4) '(1 (1) (0 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (0 (1) (1)) (1 (1)))
 
+;;; 5
+;;; a)
+
+(define arbol-quantico (construye-arbol 'a
+                                        (list (construye-arbol 'a
+                                                               (list (construye-arbol 'a '())
+                                                                     (construye-arbol 'b '())))
+                                              (construye-arbol 'b
+                                                               (list (construye-arbol 'a '())
+                                                                     (construye-arbol 'c '())))
+                                              (construye-arbol 'c '()))))
+;(pinta-arbol arbol-quantico)
+
+(define (es-camino-bosque? l bosque)
+  (and (or (not (and (null? l) (null? bosque)))
+           (null? bosque))
+       (or (es-camino? l (first bosque))
+           (es-camino-bosque? l (rest bosque)))))
+
+(define (es-camino? lista arbol)
+  (or (null? lista)
+      (equal? (symbol->string (dato-arbol arbol)) (first lista))
+      (es-camino-bosque? (rest lista) (hijos-arbol arbol))))
+
+(check-equal? (es-camino? '(a b a) arbol-quantico) #t) ; ⇒ #t
+(check-equal? (es-camino? '(a b) arbol-quantico) #f) ; ⇒ #f
+(check-equal? (es-camino? '(a b a b) arbol-quantico) #f) ; ⇒ #f
 
 
 
