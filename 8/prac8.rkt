@@ -314,19 +314,37 @@
            (es-camino-bosque? l (rest bosque)))))
 
 (define (es-camino? lista arbol)
-  (if (and (not (hoja-arbol? arbol)) (null? (rest lista)))
-      #f
-      (or (and (hoja-arbol? lista)
-               (equal? (dato-arbol arbol)
-                       (first lista)))
-          (and (equal? (dato-arbol arbol)
-                       (first lista))
-               (es-camino-bosque? (rest lista)
-                                  (hijos-arbol arbol))))))
+  (and (not (and (not (hoja-arbol? arbol))
+                 (null? (rest lista))))
+       (or (and (hoja-arbol? lista)
+                (equal? (dato-arbol arbol)
+                        (first lista)))
+           (and (equal? (dato-arbol arbol)
+                        (first lista))
+                (es-camino-bosque? (rest lista)
+                                   (hijos-arbol arbol))))))
 
 (check-equal? (es-camino? '(a b a) arbol-quantico) #t) ; ⇒ #t
 (check-equal? (es-camino? '(a b) arbol-quantico) #f) ; ⇒ #f
 (check-equal? (es-camino? '(a b a b) arbol-quantico) #f) ; ⇒ #f
 
+;;; b)
+(define (nodos-nivel-bosque nivel bosque)
+  (if (null? bosque) '()
+      (append (nodos-nivel nivel (first bosque))
+              (nodos-nivel-bosque nivel (rest bosque)))))
+
+(define (nodos-nivel nivel arbol)
+  (if (= nivel 0)
+      (list (dato-arbol arbol))
+      (nodos-nivel-bosque (- nivel 1) (hijos-arbol arbol))))
+
+(define arbold '(1 (2 (3 (4) (2)) (5)) (6 (7))))
+;(pinta-arbol arbold)
+  
+(check-equal? (nodos-nivel 0 arbold) '(1)) ; ⇒ '(1)
+(check-equal? (nodos-nivel 1 arbold) '(2 6)) ; ⇒ '(2 6)
+(check-equal? (nodos-nivel 2 arbold) '(3 5 7)) ; ⇒ '(3 5 7)
+(check-equal? (nodos-nivel 3 arbold) '(4 2)); ⇒ '(4 2)
 
 
