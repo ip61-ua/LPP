@@ -54,8 +54,7 @@
           (dato-arbol arbol) 
           (map suma-datos-arbol-fos (hijos-arbol arbol))))
 
-(suma-datos-arbol-fos arbol)
-
+;(suma-datos-arbol-fos arbol)
 
 ;;; ¿Qué devuelve la invocación a map dentro de la función?
 ;;> Un lista de números que refleja la suma de cada uno de los hijos.
@@ -67,6 +66,29 @@
 ;;> 3. (+ 42 (+ 14 (+ 15 9))), 42 = 12+9+10+11
 
 
+;;; b.1)
+(define arbolb-sin-barrera '(40 (23 (5 () ())
+                                    (32 (29 () ())
+                                        ()))
+                                (45 ()
+                                    (56 () ()))))
+;(pinta-arbolb arbolb-sin-barrera)
 
-
-              
+(define arbolb (construye-arbolb 40
+                                 (construye-arbolb 23
+                                                   (construye-arbolb 5
+                                                                     arbolb-vacio
+                                                                     arbolb-vacio)
+                                                   (construye-arbolb 32
+                                                                     (construye-arbolb 29
+                                                                                       arbolb-vacio
+                                                                                       arbolb-vacio)
+                                                                     arbolb-vacio))
+                                 (construye-arbolb 45
+                                                   arbolb-vacio
+                                                   (construye-arbolb 56
+                                                                     arbolb-vacio
+                                                                     arbolb-vacio))))
+;(pinta-arbolb arbolb)
+(check-equal? arbolb arbolb-sin-barrera)
+(check-equal? (dato-arbolb (hijo-izq-arbolb (hijo-der-arbolb (hijo-izq-arbolb arbolb)))) 29)
