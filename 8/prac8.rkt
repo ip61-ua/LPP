@@ -212,12 +212,56 @@
 (check-equal? (todas-hojas-cumplen-fos? (lambda (x) (> x 0)) '(10 (2) (12 (4) (-9999)) (10 (6)))) #f)
 (check-equal? (todas-hojas-cumplen-fos? (lambda (x) (> x 0)) '(10 (2) (-999 (4) (512)) (10 (6)))) #t)
 
+;;; 4
+;;; a)
+(define arbol3 '(20 (2) (8 (4) (2)) (9 (5))))
 
+;(define (suma-raices-hijos-fail arbol)
+;  (foldr (lambda (cur acc)
+;           (+ acc (suma-raices-hijos cur)))
+;         (if (hoja-arbol? arbol)
+;             0
+;             (dato-arbol arbol))
+;         (hijos-arbol arbol)))
 
+(define (suma-raices-hijos arbol)
+  (foldr (lambda (cur acc)
+           (+ acc (dato-arbol cur)))
+         0
+         (hijos-arbol arbol)))
 
+(check-equal? (suma-raices-hijos arbol3) 19) ; ⇒ 19
+(check-equal? (suma-raices-hijos (second (hijos-arbol arbol3))) 6) ; ⇒ 6
 
+;;; b)
+(define (raices-mayores-arbol-sumador bosque)
+  (if (null? bosque) 0
+      (+ (dato-arbol (first bosque))
+         (raices-mayores-arbol-sumador (rest bosque)))))
 
+(define (raices-mayores-bosque? bosque)
+  (or (null? bosque)
+      (and (raices-mayores-arbol? (first bosque))
+           (raices-mayores-bosque? (rest bosque)))))
 
+(define (raices-mayores-arbol? arbol)
+  (and (> (dato-arbol arbol)
+          (raices-mayores-arbol-sumador (hijos-arbol arbol)))
+       (raices-mayores-bosque? (hijos-arbol arbol))))
+
+(define (raices-mayores-arbol-fos? arbol)
+  (and (> (dato-arbol arbol)
+          (foldr (lambda (cur acc)
+                   (+ acc (dato-arbol cur)))
+                   0
+                   (hijos-arbol arbol)))
+       (for-all? raices-mayores-arbol-fos? (hijos-arbol arbol))))
+
+(define arbol4 '(20 (2) (8 (4) (5)) (9 (5))))
+(check-equal? (raices-mayores-arbol? arbol3) #t)
+(check-equal? (raices-mayores-arbol? arbol4) #f)
+(check-equal? (raices-mayores-arbol-fos? arbol3) #t)
+(check-equal? (raices-mayores-arbol-fos? arbol4) #f)
 
 
 
