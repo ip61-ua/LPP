@@ -263,6 +263,37 @@
 (check-equal? (raices-mayores-arbol-fos? arbol3) #t)
 (check-equal? (raices-mayores-arbol-fos? arbol4) #f)
 
+;;; c)
+(define (comprueba-raices-bosque bosque)
+  (if (null? bosque) '()
+      (cons (comprueba-raices-arbol (first bosque))
+            (comprueba-raices-bosque (rest bosque)))))
+
+(define (comprueba-raices-arbol arbol)
+  (construye-arbol (if (or (hoja-arbol? arbol)
+                           (> (dato-arbol arbol)
+                              (raices-mayores-arbol-sumador (hijos-arbol arbol))))
+                       1
+                       0)
+                   (comprueba-raices-bosque (hijos-arbol arbol)) ))
+
+(define (comprueba-raices-arbol-fos arbol)
+  (construye-arbol (if (or (hoja-arbol? arbol)
+                           (> (dato-arbol arbol)
+                              (foldr (lambda (cur acc)
+                                       (+ acc (dato-arbol cur)))
+                                     0
+                                     (hijos-arbol arbol))))
+                       1
+                       0)
+                   (map comprueba-raices-arbol-fos
+                        (hijos-arbol arbol))))
+
+;(pinta-arbol (comprueba-raices-arbol arbol4))
+(check-equal? (comprueba-raices-arbol arbol3) '(1 (1) (1 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (1 (1) (1)) (1 (1)))
+(check-equal? (comprueba-raices-arbol arbol4) '(1 (1) (0 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (0 (1) (1)) (1 (1)))
+(check-equal? (comprueba-raices-arbol-fos arbol3) '(1 (1) (1 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (1 (1) (1)) (1 (1)))
+(check-equal? (comprueba-raices-arbol-fos arbol4) '(1 (1) (0 (1) (1)) (1 (1)))) ; ⇒ (1 (1) (0 (1) (1)) (1 (1)))
 
 
 
