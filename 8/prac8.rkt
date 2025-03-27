@@ -114,6 +114,50 @@
          (symbol->string (dato-arbol arbols))
          (hijos-arbol arbols)))
 
-(to-string-arbol-fos arbol2) ; ⇒ "abcdef"
+;(to-string-arbol-fos arbol2) ; ⇒ "abcdef"
 (check-equal? (to-string-arbol arbol2) "abcdef")
+
+;;; b)
+(define (veces-arbol-bosque dato bosque)
+  (if (null? bosque)
+      0
+      (+ (veces-arbol dato (first bosque))
+         (veces-arbol-bosque dato (rest bosque)))))
+
+(define (veces-arbol dato arbol)
+  (+ (veces-arbol-bosque dato (hijos-arbol arbol))
+     (if (equal? dato (dato-arbol arbol))
+         1
+         0)))
+
+(define (veces-arbol-fos dato arbol)
+  (foldr (lambda (cur acc) (+ acc (veces-arbol-fos dato cur)))
+         (if (equal? dato (dato-arbol arbol)) 1 0)
+         (hijos-arbol arbol)))
+
+;(veces-arbol 'b '(a (b (c) (d)) (b (b) (f)))) ; ⇒ 3
+(check-equal? (veces-arbol 'b '(a (b (c) (d)) (b (b) (f)))) 3)
+;(veces-arbol 'g '(a (b (c) (d)) (b (b) (f)))) ; ⇒ 0
+(check-equal? (veces-arbol 'g '(a (b (c) (d)) (b (b) (f)))) 0)
+;(veces-arbol-fos 'b '(a (b (c) (d)) (b (b) (f)))) ; ⇒ 3
+(check-equal? (veces-arbol-fos 'b '(a (b (c) (d)) (b (b) (f)))) 3)
+;(veces-arbol-fos 'g '(a (b (c) (d)) (b (b) (f)))) ; ⇒ 0
+(check-equal? (veces-arbol-fos 'g '(a (b (c) (d)) (b (b) (f)))) 0)
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
