@@ -92,3 +92,28 @@
 ;(pinta-arbolb arbolb)
 (check-equal? arbolb arbolb-sin-barrera)
 (check-equal? (dato-arbolb (hijo-izq-arbolb (hijo-der-arbolb (hijo-izq-arbolb arbolb)))) 29)
+
+;;; 2
+;;; a)
+(define arbol2 '(a (b (c (d)) (e)) (f)))
+
+(define (to-string-arbol-bosque bosque)
+  (if (null? bosque)
+      ""
+      (string-append (to-string-arbol (first bosque))
+                     (to-string-arbol-bosque (rest bosque)))))
+
+(define (to-string-arbol arbol)
+  (string-append (symbol->string (dato-arbol arbol))
+                 (to-string-arbol-bosque (hijos-arbol arbol))))
+
+(define (to-string-arbol-fos arbols)
+  (foldl (lambda (cur acc)
+           (string-append acc
+                          (to-string-arbol-fos cur) ))
+         (symbol->string (dato-arbol arbols))
+         (hijos-arbol arbols)))
+
+(to-string-arbol-fos arbol2) ; ⇒ "abcdef"
+(check-equal? (to-string-arbol arbol2) "abcdef")
+
