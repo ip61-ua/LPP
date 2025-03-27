@@ -144,11 +144,73 @@
 ;(veces-arbol-fos 'g '(a (b (c) (d)) (b (b) (f)))) ; ⇒ 0
 (check-equal? (veces-arbol-fos 'g '(a (b (c) (d)) (b (b) (f)))) 0)
 
- 
+;;; 3
+;;; a)
 
+(define arbole1 '(10 (2) (12 (4) (2)) (10 (5))))
+(define arbole2 '(10 (2) (12 (4) (2)) (10 (6))))
 
+(define (hojas-cumplen-bosque pred bosque)
+  (if (null? bosque)
+      '()
+      (append (hojas-cumplen pred (first bosque))
+              (hojas-cumplen-bosque pred (rest bosque)))))
 
+(define (hojas-cumplen pred arbol)
+  (if (and (hoja-arbol? arbol) (pred (dato-arbol arbol)))
+      (list (dato-arbol arbol))
+      (hojas-cumplen-bosque pred (hijos-arbol arbol))))
 
+(define (hojas-cumplen-fos pred arbol)
+  (foldl (lambda (cur acc)
+           (append acc (hojas-cumplen-fos pred cur)))
+         (if (and (hoja-arbol? arbol)
+                  (pred (dato-arbol arbol))) 
+             (list (dato-arbol arbol))
+             '())
+         (hijos-arbol arbol)))
+
+;(hojas-cumplen even? arbole1) ; ⇒ '(2 4 2)
+(check-equal? (hojas-cumplen even? arbole1) '(2 4 2))
+;(hojas-cumplen even? arbole2) ; ⇒ '(2 4 2 6)
+(check-equal? (hojas-cumplen even? arbole2) '(2 4 2 6))
+;(hojas-cumplen-fos even? arbole1) ; ⇒ '(2 4 2)
+(check-equal? (hojas-cumplen-fos even? arbole1) '(2 4 2))
+;(hojas-cumplen-fos even? arbole2) ; ⇒ '(2 4 2 6)
+(check-equal? (hojas-cumplen-fos even? arbole2) '(2 4 2 6))
+
+;;; b)
+
+; Orgulloso de esta solución usando solamente operadores lógicos.
+(define (todas-hojas-cumplen-bosque? pred bosque)
+  (or (null? bosque)
+      (and (todas-hojas-cumplen? pred (first bosque))
+           (todas-hojas-cumplen-bosque? pred (rest bosque)))))
+
+(define (todas-hojas-cumplen? pred arbol)
+  (xor (and (not (hoja-arbol? arbol))
+            (todas-hojas-cumplen-bosque? pred (hijos-arbol arbol)))
+       (and (hoja-arbol? arbol)
+            (pred (dato-arbol arbol)))))
+
+(define (todas-hojas-cumplen-fos? pred arbol)
+  (xor (and (not (hoja-arbol? arbol))
+            (for-all? (lambda (x) (todas-hojas-cumplen-fos? pred x))
+                      (hijos-arbol arbol)))
+       (and (hoja-arbol? arbol)
+            (pred (dato-arbol arbol)))))
+
+(check-equal? (todas-hojas-cumplen? even? arbole1) #f)
+(check-equal? (todas-hojas-cumplen? even? arbole2) #t)
+(check-equal? (todas-hojas-cumplen? (lambda (x) (> x 0)) '(10 (2) (12 (4) (2)) (10 (6)))) #t)
+(check-equal? (todas-hojas-cumplen? (lambda (x) (> x 0)) '(10 (2) (12 (4) (-9999)) (10 (6)))) #f)
+(check-equal? (todas-hojas-cumplen? (lambda (x) (> x 0)) '(10 (2) (-999 (4) (512)) (10 (6)))) #t)
+
+(check-equal? (todas-hojas-cumplen-fos? even? arbole1) #f)
+(check-equal? (todas-hojas-cumplen-fos? even? arbole2) #t)
+(check-equal? (todas-hojas-cumplen-fos? (lambda (x) (> x 0)) '(10 (2) (12 (4) (2)) (10 (6)))) #t)
+(check-equal? (todas-hojas-cumplen-fos? (lambda (x) (> x 0)) '(10 (2) (12 (4) (-9999)) (10 (6)))) #f)
+(check-equal? (todas-hojas-cumplen-fos? (lambda (x) (> x 0)) '(10 (2) (-999 (4) (512)) (10 (6)))) #t)
 
 
 
