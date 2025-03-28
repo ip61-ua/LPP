@@ -444,4 +444,4 @@
 (define a3 (inserta-ordenado 2 a2))
 (define a4 (inserta-ordenado 6 a3))
 
-(pinta-arbolb a4)
+;(pinta-arbolb a4)
