@@ -404,3 +404,22 @@
 (check-equal? (ordenado? arbolb2) #f)
 
 ;;; 7
+(define pistacho '(9 (5 (3 (1)
+                           (4))
+                        (7))
+                     (15 (13 (10)
+                             (14))
+                         (20 (23)))))
+
+(define (camino-arbolb arbolb camino)
+  (cond
+    ((null? camino) '())
+    ((equal? (first camino) '=) (cons (dato-arbolb arbolb)
+                                      (camino-arbolb arbolb (rest camino))))
+    ((equal? (first camino) '<) (camino-arbolb (hijo-izq-arbolb arbolb)
+                                               (rest camino)))
+    ((equal? (first camino) '>) (camino-arbolb (hijo-der-arbolb arbolb)
+                                               (rest camino)))))
+
+(camino-arbolb pistacho '(= < < = > =)) ; ⇒ '(9 3 4)
+(camino-arbolb pistacho '(> = < < =)) ; ⇒ '(15 10)
