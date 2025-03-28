@@ -421,5 +421,27 @@
     ((equal? (first camino) '>) (camino-arbolb (hijo-der-arbolb arbolb)
                                                (rest camino)))))
 
-(camino-arbolb pistacho '(= < < = > =)) ; ⇒ '(9 3 4)
-(camino-arbolb pistacho '(> = < < =)) ; ⇒ '(15 10)
+(check-equal? (camino-arbolb pistacho '(= < < = > =)) '(9 3 4)) ; ⇒ '(9 3 4)
+(check-equal? (camino-arbolb pistacho '(> = < < =)) '(15 10)) ; ⇒ '(15 10)
+
+;;; 7 
+(define (inserta-ordenado n a)
+  (cond
+    ((vacio-arbolb? a) (construye-arbolb n
+                                         arbolb-vacio
+                                         arbolb-vacio))
+    ((< n
+        (dato-arbolb a)) (construye-arbolb (dato-arbolb a)
+                                           (inserta-ordenado n (hijo-izq-arbolb a))
+                                           (hijo-der-arbolb a)))
+    ((>= n
+         (dato-arbolb a)) (construye-arbolb (dato-arbolb a)
+                                            (hijo-izq-arbolb a)
+                                            (inserta-ordenado n (hijo-der-arbolb a))))))
+
+(define a1 (inserta-ordenado 5 arbolb-vacio)) 
+(define a2 (inserta-ordenado 4 a1))
+(define a3 (inserta-ordenado 2 a2))
+(define a4 (inserta-ordenado 6 a3))
+
+(pinta-arbolb a4)
