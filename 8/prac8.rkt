@@ -347,4 +347,60 @@
 (check-equal? (nodos-nivel 2 arbold) '(3 5 7)) ; ⇒ '(3 5 7)
 (check-equal? (nodos-nivel 3 arbold) '(4 2)); ⇒ '(4 2)
 
+;;; 6
+(define arbolb1 '(20 (13 (2 () ())
+                         (18 () ()))
+                     (40 (25 () () )
+                         (43 () ()))))
+(define arbolb2 '(20 (13 (2 () ())
+                         (22 () ()))
+                     (40 (25 () () )
+                         (43 () ()))))
 
+(define (to-list-arbolb arbol)
+   (if (vacio-arbolb? arbol)
+      '()
+      (cons (dato-arbolb arbol)
+            (append (to-list-arbolb (hijo-izq-arbolb arbol))
+                    (to-list-arbolb (hijo-der-arbolb arbol))))))
+
+(define (to-list-arbolb-pre arbol)
+   (if (vacio-arbolb? arbol)
+      '()
+      (append (to-list-arbolb-pre (hijo-izq-arbolb arbol))
+              (list (dato-arbolb arbol))
+              (to-list-arbolb-pre (hijo-der-arbolb arbol)))))
+
+(define (ordenado-entre? arbolb min max)
+  (apply <= (append (list min) (to-list-arbolb-pre arbolb) (list max))))
+
+(check-equal? (ordenado-entre? arbolb1 0 50) #t) ; ⇒ #t
+(check-equal? (ordenado-entre? arbolb2 0 50) #f) ; ⇒ #f
+(check-equal? (ordenado-entre? arbolb1 0 30) #f) ; ⇒ #f
+
+;;; b)
+(define (ordenado-menor? arbolb max)
+  (ordenado-entre? arbolb
+                   (first (to-list-arbolb-pre arbolb))
+                   max))
+
+(define (ordenado-mayor? arbolb min)
+  (ordenado-entre? arbolb
+                   min
+                   (first (reverse (to-list-arbolb-pre arbolb)))))
+
+(check-equal? (ordenado-menor? arbolb1 50) #t) ; ⇒ #t
+(check-equal? (ordenado-menor? arbolb1 40) #f) ; ⇒ #f
+(check-equal? (ordenado-menor? arbolb2 50) #f); ⇒ #f
+(check-equal? (ordenado-mayor? arbolb1 0)  #t); ⇒ #t
+(check-equal? (ordenado-mayor? arbolb1 20) #f); ⇒ #f
+(check-equal? (ordenado-mayor? arbolb2 0)  #f); ⇒ #f
+
+;;; c)
+(define (ordenado? arbolb)
+  (ordenado-mayor? arbolb (first (to-list-arbolb-pre arbolb))))
+
+(check-equal? (ordenado? arbolb1) #t)
+(check-equal? (ordenado? arbolb2) #f)
+
+;;; 7
