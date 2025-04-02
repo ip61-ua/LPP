@@ -404,6 +404,7 @@
 (check-equal? (ordenado? arbolb2) #f)
 
 ;;; 7
+;;; a)
 (define pistacho '(9 (5 (3 (1)
                            (4))
                         (7))
@@ -424,7 +425,7 @@
 (check-equal? (camino-arbolb pistacho '(= < < = > =)) '(9 3 4)) ; ⇒ '(9 3 4)
 (check-equal? (camino-arbolb pistacho '(> = < < =)) '(15 10)) ; ⇒ '(15 10)
 
-;;; 7 
+;;; b)
 (define (inserta-ordenado n a)
   (cond
     ((vacio-arbolb? a) (construye-arbolb n
