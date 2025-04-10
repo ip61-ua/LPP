@@ -112,3 +112,49 @@ func saluda(nombre: String, comida: String = "burger cangreburger") -> String {
 }
 print(saluda(nombre: "Bob"))
 */
+
+// Exp. 8
+/*
+func saluda(_ nombre: String, el dia: String) -> String {
+  return "Hola \(nombre), hoy es \(dia)."
+}
+print(saluda("Bob", el: "Martes"))
+
+func
+  calculaEstadisticas(puntuaciones: [Int])
+  -> (min: Int, max: Int, sum: Int)
+{
+  var min = puntuaciones[0]
+  var max = puntuaciones[0]
+  var sum = 0
+
+  for puntuacion in puntuaciones {
+    if puntuacion > max {
+      max = puntuacion
+    } else if puntuacion < min {
+      min = puntuacion
+    }
+    sum += puntuacion
+  }
+
+  return (min, max, sum)
+}
+
+let estadisticas = calculaEstadisticas(puntuaciones: [5, 3, 100, 3, 9])
+print(estadisticas)
+
+func suma(_ numeros: Int...) -> Float {
+  var suma = 0
+  if numeros.count == 0 {
+    return 0
+  }
+
+  for num in numeros {
+    suma += num
+  }
+  let res = Float(suma) / Float(numeros.count)
+  return res
+}
+print(suma())
+print(suma(42, 597, 12))
+*/
