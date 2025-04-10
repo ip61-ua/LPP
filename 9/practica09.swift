@@ -221,6 +221,7 @@ print(d)
  * Ejercicio 2
  */
 
+// a
 func
   prefijos(prefijo: String, palabras: [String])
   -> [Bool]
@@ -230,9 +231,12 @@ func
   }
 
   var res = [palabras[0].hasPrefix(prefijo)]
-
-  return
-    res.append(prefijos(prefijo: prefijo, palabras: Array(palabras.dropFirst())))
+  res.append(
+    contentsOf:
+      prefijos(
+        prefijo: prefijo, palabras: Array(palabras.dropFirst())
+      ))
+  return res
 }
 
 let array = ["anterior", "antígona", "antena"]
@@ -240,3 +244,29 @@ let prefijo = "ante"
 print("\n******\n2a) Función prefijos(prefijo:palabras:)\n******")
 print(prefijos(prefijo: prefijo, palabras: array))
 // Imprime: [true, false, true]
+
+// b
+func
+  parejaMayorParImpar(numeros: [Int])
+  -> (Int, Int)
+{
+  if numeros.isEmpty {
+    return (0, 0)
+  }
+
+  let myNum = numeros[0]
+  let rest = parejaMayorParImpar(numeros: Array(numeros.dropFirst()))
+
+  if myNum % 2 == 0 && myNum > rest.1 {
+    return (rest.0, myNum)
+  } else if myNum % 2 != 0 && myNum > rest.0 {
+    return (myNum, rest.1)
+  }
+
+  return (rest.0, rest.1)
+}
+
+let numeros = [10, 201, 12, 103, 204, 2]
+print("\n******\n2b) Función parejaMayorParImpar(numeros:)\n******")
+print(parejaMayorParImpar(numeros: numeros))
+// Imprime: (201, 204)
