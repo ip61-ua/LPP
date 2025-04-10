@@ -159,6 +159,8 @@ print(suma())
 print(suma(42, 597, 12))
 */
 
+// Exp. 9
+/*
 func devuelveQuince() -> Int {
   var y = 10
   func suma() {
@@ -213,3 +215,28 @@ print(d)
 
 let x = numeros.map { $0 % 2 == 0 ? $0 : 0 }
 print(d)
+*/
+
+/**
+ * Ejercicio 2
+ */
+
+func
+  prefijos(prefijo: String, palabras: [String])
+  -> [Bool]
+{
+  if palabras.isEmpty {
+    return []
+  }
+
+  var res = [palabras[0].hasPrefix(prefijo)]
+
+  return
+    res.append(prefijos(prefijo: prefijo, palabras: Array(palabras.dropFirst())))
+}
+
+let array = ["anterior", "antígona", "antena"]
+let prefijo = "ante"
+print("\n******\n2a) Función prefijos(prefijo:palabras:)\n******")
+print(prefijos(prefijo: prefijo, palabras: array))
+// Imprime: [true, false, true]
