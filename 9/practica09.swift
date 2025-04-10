@@ -158,3 +158,58 @@ func suma(_ numeros: Int...) -> Float {
 print(suma())
 print(suma(42, 597, 12))
 */
+
+func devuelveQuince() -> Int {
+  var y = 10
+  func suma() {
+    y += 5
+  }
+  suma()
+  return y
+}
+print(devuelveQuince())
+
+func construyeIncrementador() -> ((Int) -> Int) {
+  func sumaUno(numero: Int) -> Int {
+    return 1 + numero
+  }
+  return sumaUno
+}
+var incrementa = construyeIncrementador()
+print(incrementa(incrementa(7)))
+
+func devuelveSuma() -> (() -> Int) {
+  var y = 10
+  func suma() -> Int {
+    y += 5
+    return y
+  }
+  return suma
+}
+
+let f = devuelveSuma()
+print(f())
+print(f())
+print(f())
+
+func cumpleCondicion(lista: [Int], condicion: (Int) -> Bool) -> Bool {
+  for item in lista {
+    if condicion(item) {
+      return true
+    }
+  }
+  return false
+}
+func menorQueDiez(numero: Int) -> Bool {
+  return numero < 10
+}
+var numeros = [20, 19, 7, 12]
+print(cumpleCondicion(lista: numeros, condicion: menorQueDiez))
+
+let d = numeros.map({ numero in
+  numero % 2 == 0 ? 3 * numero : 0
+})
+print(d)
+
+let x = numeros.map { $0 % 2 == 0 ? $0 : 0 }
+print(d)
