@@ -309,3 +309,22 @@ func cuadrado(x: Int) -> Int {
 }
 print(compruebaParejas([2, 4, 16, 5, 10, 100, 105], funcion: cuadrado))
 // Imprime [(2,4), (4,16), (10,100)]
+
+// b
+func
+  coinciden(parejas: [(Int, Int)], funcion: (Int) -> Int)
+  -> [Bool]
+{
+  if parejas.isEmpty {
+    return []
+  }
+
+  let miTupla = parejas[0]
+  let coincideTupla = funcion(miTupla.0) == miTupla.1
+
+  return [coincideTupla] + coinciden(parejas: Array(parejas.dropFirst()), funcion: funcion)
+}
+
+let array1 = [(2, 4), (4, 14), (4, 16), (5, 25), (10, 100)]
+print(coinciden(parejas: array1, funcion: cuadrado))
+// Imprime: [true, false, true, true, true]
