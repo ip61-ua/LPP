@@ -364,5 +364,32 @@ let movimientos: [Movimiento] = [
   .deposito(830.0), .cargoRecibo("Gimnasio", 45.0), .deposito(400.0), .cajero(100.0),
   .cargoRecibo("Fnac", 38.70),
 ]
+/*
 print(aplica(movimientos: movimientos))
+*/
 //Imprime (1046.3, ["Gimnasio", "Fnac"])
+
+indirect enum ArbolBinario {
+  case vacio
+  case nodo(Int, ArbolBinario, ArbolBinario)
+}
+
+let arbol: ArbolBinario = .nodo(
+  8,
+  .nodo(2, .vacio, .vacio),
+  .nodo(12, .vacio, .vacio))
+
+func
+  suma(arbolb: ArbolBinario)
+  -> Int
+{
+  switch arbolb {
+  case .vacio:
+    return 0
+  case let .nodo(r, i, d):
+    return r + suma(arbolb: i) + suma(arbolb: d)
+  }
+}
+
+print(suma(arbolb: arbol))
+// Imprime: 22
