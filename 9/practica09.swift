@@ -390,6 +390,40 @@ func
     return r + suma(arbolb: i) + suma(arbolb: d)
   }
 }
-
+/*
 print(suma(arbolb: arbol))
+*/
 // Imprime: 22
+
+/// Ejercicio 6
+indirect enum Arbol {
+  case nodo(Int, [Arbol])
+}
+
+let arbol1 = Arbol.nodo(1, [])
+let arbol3 = Arbol.nodo(3, [arbol1])
+let arbol5 = Arbol.nodo(5, [])
+let arbol8 = Arbol.nodo(8, [])
+let arbol10 = Arbol.nodo(10, [arbol3, arbol5, arbol8])
+
+func esPar(x: Int) -> Bool {
+  return x % 2 == 0
+}
+
+func suma(arbol: Arbol, cumplen: ((Int) -> Bool)) -> Int {
+  switch arbol {
+  case let .nodo(raiz, hijos):
+    var result = cumplen(raiz) ? raiz : 0
+    if !(hijos.isEmpty) {
+      for hijo in hijos {
+        result += suma(arbol: hijo, cumplen: cumplen)
+      }
+    }
+    return result
+  }
+}
+
+print("La suma del árbol es: \(suma(arbol: arbol10, cumplen: esPar))")
+// Imprime: La suma del árbol genérico es: 18
+
+// print(arbol10)
