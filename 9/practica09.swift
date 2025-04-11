@@ -241,9 +241,11 @@ func
 
 let array = ["anterior", "antígona", "antena"]
 let prefijo = "ante"
+/*
 print("\n******\n2a) Función prefijos(prefijo:palabras:)\n******")
 print(prefijos(prefijo: prefijo, palabras: array))
 // Imprime: [true, false, true]
+*/
 
 // b
 func
@@ -267,6 +269,43 @@ func
 }
 
 let numeros = [10, 201, 12, 103, 204, 2]
+/*
 print("\n******\n2b) Función parejaMayorParImpar(numeros:)\n******")
 print(parejaMayorParImpar(numeros: numeros))
+*/
 // Imprime: (201, 204)
+
+/**
+ * Ejercicio 3
+ */
+
+// a
+func
+  compruebaParejas(_ lista: [Int], funcion: ((Int) -> Int))
+  -> [(Int, Int)]
+{
+  var pairResult: [(Int, Int)] = []
+
+  if lista.isEmpty {
+    return pairResult
+  }
+
+  let a = lista[0]
+  let b = funcion(a)
+
+  for elem in lista {
+    if b == elem {
+      pairResult = [(a, b)]
+      break
+    }
+  }
+
+  pairResult.append(contentsOf: compruebaParejas(Array(lista.dropFirst()), funcion: funcion))
+  return pairResult
+}
+
+func cuadrado(x: Int) -> Int {
+  return x * x
+}
+print(compruebaParejas([2, 4, 16, 5, 10, 100, 105], funcion: cuadrado))
+// Imprime [(2,4), (4,16), (10,100)]
