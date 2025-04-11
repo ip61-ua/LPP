@@ -307,8 +307,10 @@ func
 func cuadrado(x: Int) -> Int {
   return x * x
 }
+/*
 print(compruebaParejas([2, 4, 16, 5, 10, 100, 105], funcion: cuadrado))
 // Imprime [(2,4), (4,16), (10,100)]
+*/
 
 // b
 func
@@ -325,6 +327,42 @@ func
   return [coincideTupla] + coinciden(parejas: Array(parejas.dropFirst()), funcion: funcion)
 }
 
+/*
 let array1 = [(2, 4), (4, 14), (4, 16), (5, 25), (10, 100)]
 print(coinciden(parejas: array1, funcion: cuadrado))
 // Imprime: [true, false, true, true, true]
+*/
+
+enum Movimiento {
+  case deposito(Double)
+  case cargoRecibo(String, Double)
+  case cajero(Double)
+}
+
+func
+  aplica(movimientos: [Movimiento])
+  -> (Double, [String])
+{
+  var result: (Double, [String]) = (0.0, [])
+
+  for move in movimientos {
+    switch move {
+    case let .deposito(money):
+      result.0 += money
+    case let .cargoRecibo(trans, money):
+      result.0 -= money
+      result.1.append(trans)
+    case let .cajero(money):
+      result.0 -= money
+    }
+  }
+
+  return result
+}
+
+let movimientos: [Movimiento] = [
+  .deposito(830.0), .cargoRecibo("Gimnasio", 45.0), .deposito(400.0), .cajero(100.0),
+  .cargoRecibo("Fnac", 38.70),
+]
+print(aplica(movimientos: movimientos))
+//Imprime (1046.3, ["Gimnasio", "Fnac"])
